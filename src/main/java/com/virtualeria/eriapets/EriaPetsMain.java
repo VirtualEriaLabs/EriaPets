@@ -1,6 +1,7 @@
 package com.virtualeria.eriapets;
 
 import net.fabricmc.api.ModInitializer;
+import net.minecraft.client.option.Option
 
 public class EriaPetsMain implements ModInitializer {
 
