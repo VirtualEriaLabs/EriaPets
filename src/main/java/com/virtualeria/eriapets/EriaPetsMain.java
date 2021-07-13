@@ -1,16 +1,23 @@
 package com.virtualeria.eriapets;
 
+import com.virtualeria.eriapets.entities.BasePetEntity;
+import com.virtualeria.eriapets.entities.EntityRegistryPets;
 import net.fabricmc.api.ModInitializer;
-import net.minecraft.client.option.Option
+import software.bernie.geckolib3.GeckoLib;
 
 public class EriaPetsMain implements ModInitializer {
 
+    public static String ModID = "eriapets";
+
+
     @Override
     public void onInitialize() {
-        // This code runs as soon as Minecraft is in a mod-load-ready state.
-        // However, some things (like resources) may still be uninitialized.
-        // Proceed with mild caution.
 
-        System.out.println("Hello Fabric world!");
+        System.out.println("[EriaPets] Initialize");
+        GeckoLib.initialize();
+        EntityRegistryPets.initialize();
+
     }
+
+
 }

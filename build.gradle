@@ -29,6 +29,7 @@ dependencies {
 
 	// PSA: Some older mods, compiled on Loom 0.2.1, might have outdated Maven POMs.
 	// You may need to force-disable transitiveness on them.
+	modImplementation 'software.bernie.geckolib:geckolib-fabric-1.17:3.0.8:dev'
 }
 
 processResources {
@@ -83,5 +84,6 @@ publishing {
 		// Notice: This block does NOT have the same function as the block in the top level.
 		// The repositories here will be used for publishing your artifact, not for
 		// retrieving dependencies.
+		maven { url 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/' }
 	}
 }
