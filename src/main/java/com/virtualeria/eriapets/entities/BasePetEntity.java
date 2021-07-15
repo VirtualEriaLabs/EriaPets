@@ -104,16 +104,16 @@ public class BasePetEntity extends TameableEntity implements IAnimatable {
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
         PlayState playState = PlayState.CONTINUE;
         if (!(event.getLimbSwingAmount() > -0.15F && event.getLimbSwingAmount() < 0.15F) && this.getCustomDeath() == 0 ) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.BaseEntity.walk", true));
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.walk", true));
         } else if(this.getCustomDeath() > 0){
             if(this.getCustomDeath() == 2 && event.getController().getAnimationState() == AnimationState.Stopped){
-                event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.BaseEntity.deathPos", true));
+                event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.deathPos", true));
             }else if(this.getCustomDeath() == 1){
-                event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.BaseEntity.death", false));
+                event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.death", false));
                 this.setCustomDeath(2);
             }
         }else{
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.BaseEntity.idle", true));
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.idle", true));
         }
         return playState;
     }
@@ -176,10 +176,6 @@ public class BasePetEntity extends TameableEntity implements IAnimatable {
                     return ActionResult.SUCCESS;
                 }else if(this.getCustomDeath() != 0) revive();
             }
-
-
-
-
         return super.interactMob(player, hand);
     }
 
