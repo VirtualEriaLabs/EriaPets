@@ -172,7 +172,7 @@ public class BasePetEntity extends TameableEntity implements IAnimatable {
                 return ActionResult.SUCCESS;
             }else{
                 if(this.getCustomDeath() == 0)   {
-                    customHability();
+                    customAbility();
                     return ActionResult.SUCCESS;
                 }else if(this.getCustomDeath() != 0) revive();
             }
@@ -215,7 +215,7 @@ public class BasePetEntity extends TameableEntity implements IAnimatable {
 
     }
 
-    public void customHability(){
+    public void customAbility(){
         float radio = 10;
         List<Entity> listEntities = world.getOtherEntities((Entity)null,new Box(getX() - radio, getY() - radio, getZ() - radio, getX()  + radio, getY()  + radio, getZ() + radio));
 
