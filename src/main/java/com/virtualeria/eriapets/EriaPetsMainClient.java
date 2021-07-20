@@ -2,6 +2,7 @@ package com.virtualeria.eriapets;
 
 import com.virtualeria.eriapets.client.renderer.BasePetEntityRenderer;
 
+import com.virtualeria.eriapets.client.renderer.OthoPetEntityRenderer;
 import com.virtualeria.eriapets.entities.EntityRegistryPets;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
@@ -16,7 +17,7 @@ public class EriaPetsMainClient  implements ClientModInitializer {
     public void onInitializeClient() {
         System.out.println("[ERIAPETS CLIENT] Inizialitze client");
         EntityRendererRegistry.INSTANCE.register(EntityRegistryPets.BASE_PET_ENTITY, BasePetEntityRenderer::new);
-
+        EntityRendererRegistry.INSTANCE.register(EntityRegistryPets.OTHO_PET_ENTITY, OthoPetEntityRenderer::new);
 
 
     }

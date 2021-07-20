@@ -48,7 +48,11 @@ public class BasePetEntity extends TameableEntity implements IAnimatable {
         HAPPINESS = DataTracker.registerData(BasePetEntity.class, TrackedDataHandlerRegistry.FLOAT);
         CUSTOMDEATH =  DataTracker.registerData(BasePetEntity.class, TrackedDataHandlerRegistry.INTEGER);
     }
+    public BasePetEntity(EntityType<? extends TameableEntity> entityType, World world) {
+        super(entityType, world);
+        this.ignoreCameraFrustum = true;
 
+    }
     /**
      * Initialize sync data
      */
@@ -117,11 +121,6 @@ public class BasePetEntity extends TameableEntity implements IAnimatable {
         }
         return playState;
     }
-    public BasePetEntity(EntityType<? extends TameableEntity> entityType, World world) {
-        super(entityType, world);
-        this.ignoreCameraFrustum = true;
-
-    }
 
 
     @Override
@@ -153,12 +152,14 @@ public class BasePetEntity extends TameableEntity implements IAnimatable {
 
     @Override
     public ActionResult interactMob(PlayerEntity player, Hand hand) {
+        System.out.println( "OWNER : " + this.getOwnerUuid());
         ItemStack itemStack = player.getStackInHand(hand);
         if (isBreedingItem(itemStack)) {
             int i = getBreedingAge();
             if (!world.isClient && i == 0 && canEat()) {
                 eat(player, hand, itemStack);
                 lovePlayer(player);
+                System.out.println("SET OWNER " + player);
                 setOwner(player);
                 return ActionResult.SUCCESS;
             }
@@ -176,6 +177,8 @@ public class BasePetEntity extends TameableEntity implements IAnimatable {
                     return ActionResult.SUCCESS;
                 }else if(this.getCustomDeath() != 0) revive();
             }
+
+
         return super.interactMob(player, hand);
     }
 
@@ -258,6 +261,7 @@ public class BasePetEntity extends TameableEntity implements IAnimatable {
     public void revive(){
         initGoals();
         this.setCustomDeath(0);
+        this.setInvulnerable(false);
     }
 
 
