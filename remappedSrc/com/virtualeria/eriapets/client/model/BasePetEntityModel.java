@@ -2,36 +2,34 @@ package com.virtualeria.eriapets.client.model;
 
 import com.virtualeria.eriapets.EriaPetsMain;
 import com.virtualeria.eriapets.entities.BasePetEntity;
-import com.virtualeria.eriapets.entities.OthoPetEntity;
 import net.minecraft.util.Identifier;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.processor.IBone;
 import software.bernie.geckolib3.model.AnimatedGeoModel;
 import software.bernie.geckolib3.model.provider.data.EntityModelData;
 
-import java.sql.Timestamp;
-
-public class OthoPetEntityModel extends AnimatedGeoModel<OthoPetEntity> {
+public class BasePetEntityModel extends AnimatedGeoModel<BasePetEntity> {
 
     @Override
-    public Identifier getModelLocation(OthoPetEntity othoPetEntity) {
-        return new Identifier(EriaPetsMain.ModID, "geo/otho.geo.json");
+    public Identifier getModelLocation(BasePetEntity basePetEntity) {
+        return new Identifier(EriaPetsMain.ModID, "geo/baseentity.geo.json");
     }
 
     @Override
-    public Identifier getTextureLocation(OthoPetEntity othoPetEntity) {
-        return new Identifier(EriaPetsMain.ModID, "textures/otho.png");
+    public Identifier getTextureLocation(BasePetEntity basePetEntity) {
+        return new Identifier(EriaPetsMain.ModID, "textures/baseentity.png");
     }
 
     @Override
-    public Identifier getAnimationFileLocation(OthoPetEntity othoPetEntity) {
-        return new Identifier(EriaPetsMain.ModID, "animations/otho.animation.json");
+    public Identifier getAnimationFileLocation(BasePetEntity basePetEntity) {
+        return new Identifier(EriaPetsMain.ModID, "animations/baseentity.animation.json");
     }
 
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     @Override
-    public void setLivingAnimations(OthoPetEntity entity, Integer uniqueID, AnimationEvent customPredicate) {
+    public void setLivingAnimations(BasePetEntity entity, Integer uniqueID, AnimationEvent customPredicate) {
         super.setLivingAnimations(entity, uniqueID, customPredicate);
-        IBone head = this.getAnimationProcessor().getBone("head");
+        IBone head = this.getAnimationProcessor().getBone("Head");
 
         EntityModelData extraData = (EntityModelData) customPredicate.getExtraDataOfType(EntityModelData.class).get(0);
         head.setRotationX((extraData.headPitch) * ((float) Math.PI / 360F));
