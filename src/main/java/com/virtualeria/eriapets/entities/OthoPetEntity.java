@@ -1,15 +1,13 @@
 package com.virtualeria.eriapets.entities;
 
-import com.virtualeria.eriapets.events.OthoShellBreakCallback;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.passive.TameableEntity;
-import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
-import net.minecraft.util.ActionResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+
 
 public class OthoPetEntity extends  BasePetEntity{
     public OthoPetEntity(EntityType<? extends TameableEntity> entityType, World world) {
@@ -32,7 +30,5 @@ public class OthoPetEntity extends  BasePetEntity{
     public void customAbility(){
         //Don't do anything passive ability
     }
-
-
 
 }

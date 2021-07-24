@@ -6,6 +6,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.ActionResult;
 
 public interface OthoShellBreakCallback {
+
     Event<OthoShellBreakCallback> EVENT = EventFactory.createArrayBacked(OthoShellBreakCallback.class,
             (listeners) -> (player) -> {
                 for (OthoShellBreakCallback listener : listeners) {

@@ -70,13 +70,16 @@ public class BasePetEntity extends TameableEntity implements IAnimatable {
         this.dataTracker.startTracking(CUSTOMDEATH, (Integer)0);
         this.dataTracker.startTracking(ABILITYUSETIME, (String)"0");
     }
+
     protected void initGoals() {
-
-            this.goalSelector.add(5, new LookAtEntityGoal(this, PlayerEntity.class, 6.0F));
-            this.goalSelector.add(4, new WanderAroundGoal(this, 0.3f));
-            this.goalSelector.add(3, new FollowOwnerGoal(this,1f, 3f, 8, false));
             super.initGoals();
+            customGoalsInit();
+    }
 
+    private void customGoalsInit(){
+        this.goalSelector.add(5, new LookAtEntityGoal(this, PlayerEntity.class, 6.0F));
+        this.goalSelector.add(4, new WanderAroundGoal(this, 0.3f));
+        this.goalSelector.add(3, new FollowOwnerGoal(this,1f, 3f, 8, false));
     }
 
     /**
@@ -201,8 +204,6 @@ public class BasePetEntity extends TameableEntity implements IAnimatable {
 
     public void drawFireEffect(){
         if(world.isClient){
-
-
         double x = 0;
         double y = 0;
         double radio = 10;
@@ -285,7 +286,7 @@ public class BasePetEntity extends TameableEntity implements IAnimatable {
     }
 
     public void revive(){
-        initGoals();
+        this.customGoalsInit();
         this.setCustomDeath(0);
         this.setInvulnerable(false);
     }
