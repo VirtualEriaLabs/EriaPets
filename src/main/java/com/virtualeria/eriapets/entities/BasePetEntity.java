@@ -1,5 +1,8 @@
 package com.virtualeria.eriapets.entities;
 
+import com.virtualeria.eriapets.gui.PetGui;
+import com.virtualeria.eriapets.gui.PetScreen;
+import io.github.cottonmc.cotton.gui.client.CottonClientScreen;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -248,7 +251,11 @@ public class BasePetEntity extends TameableEntity implements IAnimatable {
     /**
      * Draws de GUI of the pet
      */
-    public void drawGUI(){
+    public void drawGUI()
+    {
+        if(world.isClient)
+            MinecraftClient.getInstance().openScreen(new PetScreen(new PetGui(this)));
+
         System.out.println("[BasePet] drawGUI");
     }
 
