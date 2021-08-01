@@ -119,7 +119,7 @@ public class BasePetEntity extends TameableEntity implements IAnimatable {
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
         PlayState playState = PlayState.CONTINUE;
         if (!(event.getLimbSwingAmount() > -0.15F && event.getLimbSwingAmount() < 0.15F) && this.getCustomDeath() == 0 ) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.walk", true));
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.walk", false));
         } else if(this.getCustomDeath() > 0){
             if(this.getCustomDeath() == 2 && event.getController().getAnimationState() == AnimationState.Stopped){
                 event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.deathPos", true));
@@ -127,7 +127,7 @@ public class BasePetEntity extends TameableEntity implements IAnimatable {
                 event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.death", false));
                 this.setCustomDeath(2);
             }
-        }else{
+        } if(event.getController().getAnimationState() == AnimationState.Stopped){
             event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.idle", true));
         }
         return playState;

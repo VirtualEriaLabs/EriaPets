@@ -10,6 +10,8 @@ import net.minecraft.world.World;
 
 
 public class OthoPetEntity extends  BasePetEntity{
+
+
     public OthoPetEntity(EntityType<? extends TameableEntity> entityType, World world) {
         super(entityType, world);
     }
