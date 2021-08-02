@@ -34,6 +34,7 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 public class BasePetEntity extends TameableEntity implements IAnimatable {
@@ -50,41 +51,43 @@ public class BasePetEntity extends TameableEntity implements IAnimatable {
     static {
         HUNGRY = DataTracker.registerData(BasePetEntity.class, TrackedDataHandlerRegistry.FLOAT);
         HAPPINESS = DataTracker.registerData(BasePetEntity.class, TrackedDataHandlerRegistry.FLOAT);
-        CUSTOMDEATH =  DataTracker.registerData(BasePetEntity.class, TrackedDataHandlerRegistry.INTEGER);
+        CUSTOMDEATH = DataTracker.registerData(BasePetEntity.class, TrackedDataHandlerRegistry.INTEGER);
         ABILITYUSETIME = DataTracker.registerData(BasePetEntity.class, TrackedDataHandlerRegistry.STRING);
 
     }
+
     public BasePetEntity(EntityType<? extends TameableEntity> entityType, World world) {
         super(entityType, world);
         this.ignoreCameraFrustum = true;
 
 
     }
+
     /**
      * Initialize sync data
      */
     protected void initDataTracker() {
         super.initDataTracker();
-        this.dataTracker.startTracking(HUNGRY, (Float)100f);
-        this.dataTracker.startTracking(HAPPINESS, (Float)100f);
-        this.dataTracker.startTracking(CUSTOMDEATH, (Integer)0);
-        this.dataTracker.startTracking(ABILITYUSETIME, (String)"0");
+        this.dataTracker.startTracking(HUNGRY, (Float) 100f);
+        this.dataTracker.startTracking(HAPPINESS, (Float) 100f);
+        this.dataTracker.startTracking(CUSTOMDEATH, (Integer) 0);
+        this.dataTracker.startTracking(ABILITYUSETIME, (String) "0");
     }
 
     protected void initGoals() {
-            super.initGoals();
-            customGoalsInit();
+        super.initGoals();
+        customGoalsInit();
     }
 
-    private void customGoalsInit(){
+    private void customGoalsInit() {
         this.goalSelector.add(5, new LookAtEntityGoal(this, PlayerEntity.class, 6.0F));
         this.goalSelector.add(4, new WanderAroundGoal(this, 0.3f));
-        this.goalSelector.add(3, new FollowOwnerGoal(this,1f, 3f, 8, false));
+        this.goalSelector.add(3, new FollowOwnerGoal(this, 1f, 3f, 8, false));
     }
 
     /**
-     *  Save the hungry date to the world data
-     *  * @param nbt
+     * Save the hungry date to the world data
+     * * @param nbt
      */
     public void writeCustomDataToNbt(NbtCompound nbt) {
         super.writeCustomDataToNbt(nbt);
@@ -92,9 +95,10 @@ public class BasePetEntity extends TameableEntity implements IAnimatable {
         nbt.putFloat("Happiness", this.getHungry());
         nbt.putInt("CustomDeath", this.getCustomDeath());
     }
+
     /**
-     *  Reads hungry date from the world and loads to the dataTrackers to sync the server
-     *  * @param nbt
+     * Reads hungry date from the world and loads to the dataTrackers to sync the server
+     * * @param nbt
      */
     public void readCustomDataFromNbt(NbtCompound nbt) {
         super.readCustomDataFromNbt(nbt);
@@ -104,35 +108,40 @@ public class BasePetEntity extends TameableEntity implements IAnimatable {
         if (nbt.contains("Happiness", 99)) {
             this.setHungry(nbt.getFloat("Happiness"));
         }
-        if(nbt.contains("CustomDeath",99)){
+        if (nbt.contains("CustomDeath", 99)) {
             this.setCustomDeath(nbt.getInt("CustomDeath"));
-            if(this.getCustomDeath() > 1) customDeathEvent();
+            if (this.getCustomDeath() > 1) customDeathEvent();
         }
     }
 
     /**
      * Animation controller
+     *
      * @param event
      * @param <E>
      * @return
      */
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
         PlayState playState = PlayState.CONTINUE;
-        if (!(event.getLimbSwingAmount() > -0.15F && event.getLimbSwingAmount() < 0.15F) && this.getCustomDeath() == 0 ) {
+        if (!(event.getLimbSwingAmount() > -0.15F && event.getLimbSwingAmount() < 0.15F) && this.getCustomDeath() == 0) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.walk", false));
-        } else if(this.getCustomDeath() > 0){
-            if(this.getCustomDeath() == 2 && event.getController().getAnimationState() == AnimationState.Stopped){
+        } else if (this.getCustomDeath() > 0) {
+            if (this.getCustomDeath() == 2 && event.getController().getAnimationState() == AnimationState.Stopped) {
                 event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.deathPos", true));
-            }else if(this.getCustomDeath() == 1){
+            } else if (this.getCustomDeath() == 1) {
                 event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.death", false));
                 this.setCustomDeath(2);
             }
-        } if(event.getController().getAnimationState() == AnimationState.Stopped){
+        }
+        if (event.getController().getAnimationState() == AnimationState.Stopped) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.idle", true));
         }
         return playState;
     }
 
+    public boolean isOwner(UUID uuid){
+        return  getOwnerUuid() != null && getOwnerUuid().equals(uuid);
+    }
 
     @Override
     public PassiveEntity createChild(ServerWorld world, PassiveEntity entity) {
@@ -145,13 +154,12 @@ public class BasePetEntity extends TameableEntity implements IAnimatable {
     }
 
     @Override
-    public AnimationFactory getFactory()
-    {
+    public AnimationFactory getFactory() {
         return this.factory;
     }
 
     @Override
-    public void mobTick(){
+    public void mobTick() {
         setHungry(this.getHungry() - 0.003f);
     }
 
@@ -178,15 +186,15 @@ public class BasePetEntity extends TameableEntity implements IAnimatable {
             }
         }
 
-            if(!itemStack.isEmpty() && itemStack.getItem() == Items.DIAMOND_AXE){
-                drawGUI();
+        if (!itemStack.isEmpty() && itemStack.getItem() == Items.DIAMOND_AXE) {
+            drawGUI();
+            return ActionResult.SUCCESS;
+        } else {
+            if (this.getCustomDeath() == 0) {
+                customAbility();
                 return ActionResult.SUCCESS;
-            }else{
-                if(this.getCustomDeath() == 0)   {
-                    customAbility();
-                    return ActionResult.SUCCESS;
-                }else if(this.getCustomDeath() != 0) revive();
-            }
+            } else if (this.getCustomDeath() != 0) revive();
+        }
 
 
         return super.interactMob(player, hand);
@@ -194,37 +202,38 @@ public class BasePetEntity extends TameableEntity implements IAnimatable {
 
     @Override
     public void onDeath(DamageSource source) {
-        if(!source.isOutOfWorld()){
+        if (!source.isOutOfWorld()) {
             customDeathEvent();
-        }else{
+        } else {
             this.setInvulnerable(false);
             super.onDeath(source);
         }
     }
 
-    public void drawFireEffect(){
-        if(world.isClient){
-        double x = 0;
-        double y = 0;
-        double radio = 10;
-        double yOff = 0;
+    public void drawFireEffect() {
+        if (world.isClient) {
+            double x = 0;
+            double y = 0;
+            double radio = 10;
+            double yOff = 0;
 
-        for(int i = 0; i < 50 ;i++){
-            for(int h = 0 ; h < 360;h += 5){
-                x = Math.cos(h) * radio;
-                y = Math.sin(h) * radio;
-                MinecraftClient.getInstance().particleManager.addParticle(
-                        ParticleTypes.FLAME, getX() + x, getY() + yOff, getZ() + y,
-                        0.0D, 0.0D, 0.0D
-                );
+            for (int i = 0; i < 50; i++) {
+                for (int h = 0; h < 360; h += 5) {
+                    x = Math.cos(h) * radio;
+                    y = Math.sin(h) * radio;
+                    MinecraftClient.getInstance().particleManager.addParticle(
+                            ParticleTypes.FLAME, getX() + x, getY() + yOff, getZ() + y,
+                            0.0D, 0.0D, 0.0D
+                    );
+                }
+                yOff += 0.3f;
+                radio -= 0.5f;
+                if (radio <= 0) break;
             }
-            yOff += 0.3f;
-            radio -=0.5f;
-            if(radio <= 0) break;
-        } }
+        }
     }
 
-    public void customDeathEvent(){
+    public void customDeathEvent() {
         this.setInvulnerable(true);
         this.setHealth(1);
         this.setCustomDeath(1);
@@ -232,66 +241,72 @@ public class BasePetEntity extends TameableEntity implements IAnimatable {
 
     }
 
-    public void customAbility(){
-            float radio = 10;
-            List<Entity> listEntities = world.getOtherEntities((Entity)null,new Box(getX() - radio, getY() - radio, getZ() - radio, getX()  + radio, getY()  + radio, getZ() + radio));
+    public void customAbility() {
+        float radio = 10;
+        List<Entity> listEntities = world.getOtherEntities((Entity) null, new Box(getX() - radio, getY() - radio, getZ() - radio, getX() + radio, getY() + radio, getZ() + radio));
 
-            for (Entity entidad: listEntities ) {
-                if(entidad.getType() == EntityType.ZOMBIE || entidad.getType() == EntityType.SLIME){
-                    entidad.kill();
-                }
+        for (Entity entidad : listEntities) {
+            if (entidad.getType() == EntityType.ZOMBIE || entidad.getType() == EntityType.SLIME) {
+                entidad.kill();
             }
-            drawFireEffect();
+        }
+        drawFireEffect();
     }
 
 
     /**
      * Draws de GUI of the pet
      */
-    public void drawGUI(){
+    public void drawGUI() {
         System.out.println("[BasePet] drawGUI");
     }
 
-    public void setHungry(float v){
-        this.dataTracker.set(HUNGRY,v);
-    }
-    public float getHungry(){
-        return (Float)this.dataTracker.get(HUNGRY);
-    }
-    public void setHappiness(float v){
-        this.dataTracker.set(HAPPINESS,v);
-    }
-    public float getHappiness(){
-        return (Float)this.dataTracker.get(HAPPINESS);
-    }
-    public void setCustomDeath(Integer v){
-        this.dataTracker.set(CUSTOMDEATH,v);
-    }
-    public Integer getCustomDeath(){
-        return (Integer)this.dataTracker.get(CUSTOMDEATH);
+    public void setHungry(float v) {
+        this.dataTracker.set(HUNGRY, v);
     }
 
-    public boolean abilityIsCooledDown(){
+    public float getHungry() {
+        return (Float) this.dataTracker.get(HUNGRY);
+    }
+
+    public void setHappiness(float v) {
+        this.dataTracker.set(HAPPINESS, v);
+    }
+
+    public float getHappiness() {
+        return (Float) this.dataTracker.get(HAPPINESS);
+    }
+
+    public void setCustomDeath(Integer v) {
+        this.dataTracker.set(CUSTOMDEATH, v);
+    }
+
+    public Integer getCustomDeath() {
+        return (Integer) this.dataTracker.get(CUSTOMDEATH);
+    }
+
+    public boolean abilityIsCooledDown() {
         return new Timestamp(System.currentTimeMillis()).getTime() > this.getAbilityUsedTime();
     }
-    public Long getAbilityUsedTime(){
-        String x = (String)this.dataTracker.get(ABILITYUSETIME);
+
+    public Long getAbilityUsedTime() {
+        String x = (String) this.dataTracker.get(ABILITYUSETIME);
         return Long.parseLong(x);
     }
-    public void setAbilityUsedTime(Long abilityUsedTime){
-        this.dataTracker.set(ABILITYUSETIME,abilityUsedTime.toString());
+
+    public void setAbilityUsedTime(Long abilityUsedTime) {
+        this.dataTracker.set(ABILITYUSETIME, abilityUsedTime.toString());
     }
-    public void useAbility(){
+
+    public void useAbility() {
         setAbilityUsedTime(System.currentTimeMillis() + TimeUnit.MINUTES.toMillis(abilityCooldown));
     }
 
-    public void revive(){
+    public void revive() {
         this.customGoalsInit();
         this.setCustomDeath(0);
         this.setInvulnerable(false);
     }
-
-
 
 
 }

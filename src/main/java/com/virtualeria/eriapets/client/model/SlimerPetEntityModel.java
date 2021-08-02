@@ -1,7 +1,6 @@
 package com.virtualeria.eriapets.client.model;
 
 import com.virtualeria.eriapets.EriaPetsMain;
-import com.virtualeria.eriapets.entities.OthoPetEntity;
 import com.virtualeria.eriapets.entities.SlimerPetEntity;
 import net.minecraft.util.Identifier;
 import software.bernie.geckolib3.model.AnimatedGeoModel;
