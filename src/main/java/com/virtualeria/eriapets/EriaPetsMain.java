@@ -14,6 +14,8 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import software.bernie.geckolib3.GeckoLib;
 
 import java.util.List;
@@ -22,11 +24,12 @@ public class EriaPetsMain implements ModInitializer {
 
     public static String ModID = "eriapets";
 
+    private static final Logger LOGGER = LogManager.getLogger();
 
     @Override
     public void onInitialize() {
 
-        System.out.println("[EriaPets] Initialize");
+        LOGGER.info("[EriaPets] Initialize");
         GeckoLib.initialize();
         EntityRegistryPets.initialize();
         EventsRegistry.registerEvents();
