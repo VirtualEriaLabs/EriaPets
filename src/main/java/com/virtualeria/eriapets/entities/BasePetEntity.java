@@ -1,8 +1,10 @@
 package com.virtualeria.eriapets.entities;
 
-import com.virtualeria.eriapets.gui.PetGui;
-import com.virtualeria.eriapets.gui.PetScreen;
-import io.github.cottonmc.cotton.gui.client.CottonClientScreen;
+import com.virtualeria.eriapets.gui.pet.PetGui;
+import com.virtualeria.eriapets.gui.pet.PetScreen;
+import java.sql.Timestamp;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -16,7 +18,6 @@ import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
@@ -34,10 +35,6 @@ import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
-
-import java.sql.Timestamp;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 public class BasePetEntity extends TameableEntity implements IAnimatable {
 
@@ -66,6 +63,7 @@ public class BasePetEntity extends TameableEntity implements IAnimatable {
     /**
      * Initialize sync data
      */
+    @Override
     protected void initDataTracker() {
         super.initDataTracker();
         this.dataTracker.startTracking(HUNGRY, (Float)100f);
@@ -74,6 +72,7 @@ public class BasePetEntity extends TameableEntity implements IAnimatable {
         this.dataTracker.startTracking(ABILITYUSETIME, (String)"0");
     }
 
+    @Override
     protected void initGoals() {
             super.initGoals();
             customGoalsInit();
@@ -89,6 +88,7 @@ public class BasePetEntity extends TameableEntity implements IAnimatable {
      *  Save the hungry date to the world data
      *  * @param nbt
      */
+    @Override
     public void writeCustomDataToNbt(NbtCompound nbt) {
         super.writeCustomDataToNbt(nbt);
         nbt.putFloat("Hungry", this.getHungry());
@@ -99,6 +99,7 @@ public class BasePetEntity extends TameableEntity implements IAnimatable {
      *  Reads hungry date from the world and loads to the dataTrackers to sync the server
      *  * @param nbt
      */
+    @Override
     public void readCustomDataFromNbt(NbtCompound nbt) {
         super.readCustomDataFromNbt(nbt);
         if (nbt.contains("Hungry", 99)) {
@@ -169,14 +170,14 @@ public class BasePetEntity extends TameableEntity implements IAnimatable {
         ItemStack itemStack = player.getStackInHand(hand);
         if (isBreedingItem(itemStack)) {
             int i = getBreedingAge();
-            if (!world.isClient && i == 0 && canEat()) {
+            if (!this.world.isClient && i == 0 && canEat()) {
                 eat(player, hand, itemStack);
                 lovePlayer(player);
                 System.out.println("SET OWNER " + player);
                 setOwner(player);
                 return ActionResult.SUCCESS;
             }
-            if (world.isClient) {
+            if (this.world.isClient) {
                 return ActionResult.CONSUME;
             }
         }
@@ -206,7 +207,7 @@ public class BasePetEntity extends TameableEntity implements IAnimatable {
     }
 
     public void drawFireEffect(){
-        if(world.isClient){
+        if(this.world.isClient){
         double x = 0;
         double y = 0;
         double radio = 10;
@@ -237,7 +238,8 @@ public class BasePetEntity extends TameableEntity implements IAnimatable {
 
     public void customAbility(){
             float radio = 10;
-            List<Entity> listEntities = world.getOtherEntities((Entity)null,new Box(getX() - radio, getY() - radio, getZ() - radio, getX()  + radio, getY()  + radio, getZ() + radio));
+            List<Entity> listEntities = this.world
+                .getOtherEntities((Entity)null,new Box(getX() - radio, getY() - radio, getZ() - radio, getX()  + radio, getY()  + radio, getZ() + radio));
 
             for (Entity entidad: listEntities ) {
                 if(entidad.getType() == EntityType.ZOMBIE || entidad.getType() == EntityType.SLIME){
@@ -253,7 +255,7 @@ public class BasePetEntity extends TameableEntity implements IAnimatable {
      */
     public void drawGUI()
     {
-        if(world.isClient)
+        if(this.world.isClient)
             MinecraftClient.getInstance().openScreen(new PetScreen(new PetGui(this)));
 
         System.out.println("[BasePet] drawGUI");
@@ -289,7 +291,8 @@ public class BasePetEntity extends TameableEntity implements IAnimatable {
         this.dataTracker.set(ABILITYUSETIME,abilityUsedTime.toString());
     }
     public void useAbility(){
-        setAbilityUsedTime(System.currentTimeMillis() + TimeUnit.MINUTES.toMillis(abilityCooldown));
+        setAbilityUsedTime(System.currentTimeMillis() + TimeUnit.MINUTES.toMillis(
+            this.abilityCooldown));
     }
 
     public void revive(){

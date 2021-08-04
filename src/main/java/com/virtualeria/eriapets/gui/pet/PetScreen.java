@@ -1,4 +1,4 @@
-package com.virtualeria.eriapets.gui;
+package com.virtualeria.eriapets.gui.pet;
 
 import io.github.cottonmc.cotton.gui.GuiDescription;
 import io.github.cottonmc.cotton.gui.client.CottonClientScreen;
