@@ -51,7 +51,7 @@ public class BasePetEntityRenderer extends GeoEntityRenderer<BasePetEntity> {
 
         matrices.scale(-0.025F, -0.025F, 0.025F);
         Matrix4f matrix4f = matrices.peek().getModel();
-        TextRenderer textRenderer = entityRenderer.getFontRenderer();
+        TextRenderer textRenderer = entityRenderer.getTextRenderer();
         float x = (float) (-textRenderer.getWidth(text) / 2);
 
         float backgroundOpacity = MinecraftClient.getInstance().options.getTextBackgroundOpacity(0.25F);

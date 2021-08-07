@@ -16,6 +16,7 @@ repositories {
 	// Loom adds the essential maven repositories to download Minecraft and libraries from automatically.
 	// See https://docs.gradle.org/current/userguide/declaring_repositories.html
 	// for more information about repositories.
+	maven { url 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/' }
 }
 
 dependencies {
@@ -28,8 +29,8 @@ dependencies {
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
 	// PSA: Some older mods, compiled on Loom 0.2.1, might have outdated Maven POMs.
-	// You may need to force-disable transitiveness on them.
-	modImplementation 'software.bernie.geckolib:geckolib-fabric-1.17:3.0.8:dev'
+	// You may need to force-disable transitiveness on them. geckolib-fabric-1.17-3.0.11
+	modImplementation "software.bernie.geckolib:${project.geckolib_version}"
 }
 
 processResources {
@@ -84,6 +85,6 @@ publishing {
 		// Notice: This block does NOT have the same function as the block in the top level.
 		// The repositories here will be used for publishing your artifact, not for
 		// retrieving dependencies.
-		maven { url 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/' }
+
 	}
 }
