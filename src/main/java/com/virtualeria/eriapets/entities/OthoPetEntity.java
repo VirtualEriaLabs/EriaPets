@@ -11,6 +11,7 @@ import net.minecraft.world.World;
 
 public class OthoPetEntity extends  BasePetEntity{
 
+    public static final String petName = "otho";
 
     public OthoPetEntity(EntityType<? extends TameableEntity> entityType, World world) {
         super(entityType, world);

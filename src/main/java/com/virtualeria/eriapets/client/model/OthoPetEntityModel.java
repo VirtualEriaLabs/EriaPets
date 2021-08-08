@@ -1,8 +1,8 @@
 package com.virtualeria.eriapets.client.model;
 
 import com.virtualeria.eriapets.EriaPetsMain;
-import com.virtualeria.eriapets.entities.BasePetEntity;
 import com.virtualeria.eriapets.entities.OthoPetEntity;
+import com.virtualeria.eriapets.utils.Constants;
 import net.minecraft.util.Identifier;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.processor.IBone;
@@ -15,17 +15,17 @@ public class OthoPetEntityModel extends AnimatedGeoModel<OthoPetEntity> {
 
     @Override
     public Identifier getModelLocation(OthoPetEntity othoPetEntity) {
-        return new Identifier(EriaPetsMain.ModID, "geo/otho.geo.json");
+        return new Identifier(Constants.ModID, String.format(Constants.geoDirectory, OthoPetEntity.petName));
     }
 
     @Override
     public Identifier getTextureLocation(OthoPetEntity othoPetEntity) {
-        return new Identifier(EriaPetsMain.ModID, "textures/otho.png");
+        return new Identifier(Constants.ModID, String.format(Constants.texturesDirectory, OthoPetEntity.petName));
     }
 
     @Override
     public Identifier getAnimationFileLocation(OthoPetEntity othoPetEntity) {
-        return new Identifier(EriaPetsMain.ModID, "animations/otho.animation.json");
+        return new Identifier(Constants.ModID, String.format(Constants.animationsDirectory, OthoPetEntity.petName));
     }
 
     @Override

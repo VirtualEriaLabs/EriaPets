@@ -30,6 +30,7 @@ public class EventsRegistry {
 
             float radius = 10;
             float maxFallDistance = 14;
+            float minFallDistance = 2;
 
             List<SlimerPetEntity> listEntities = player.getEntityWorld().getEntitiesByClass(SlimerPetEntity.class, new Box(player.getX() - radius, 0, player.getZ() - radius, player.getX() + radius, 256, player.getZ() + radius), SlimerPetEntity::isAlive);
 
@@ -38,7 +39,7 @@ public class EventsRegistry {
                 boolean isOwnerOfEntity = entity.isOwner(playerEntity.getUuid());
                 boolean isEntityAlive = entity.getCustomDeath() == 0;
 
-                if (isOwnerOfEntity && isEntityAlive && fallDistance < maxFallDistance) {
+                if (isOwnerOfEntity && isEntityAlive && fallDistance < maxFallDistance && fallDistance > minFallDistance) {
                     entity.useAbility();
 
                     return ActionResult.SUCCESS;

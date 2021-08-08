@@ -1,5 +1,6 @@
 package com.virtualeria.eriapets.entities;
 
+import com.virtualeria.eriapets.access.PlayerEntityDuck;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -13,7 +14,6 @@ import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
@@ -45,6 +45,8 @@ public class BasePetEntity extends TameableEntity implements IAnimatable {
     private static final TrackedData<Float> HAPPINESS;
     private static final TrackedData<Integer> CUSTOMDEATH;
     private static final TrackedData<String> ABILITYUSETIME;
+
+    public static final String petName = "baseentity";
 
     private int abilityCooldown = 1;
 
@@ -139,8 +141,8 @@ public class BasePetEntity extends TameableEntity implements IAnimatable {
         return playState;
     }
 
-    public boolean isOwner(UUID uuid){
-        return  getOwnerUuid() != null && getOwnerUuid().equals(uuid);
+    public boolean isOwner(UUID uuid) {
+        return getOwnerUuid() != null && getOwnerUuid().equals(uuid);
     }
 
     @Override
@@ -175,10 +177,14 @@ public class BasePetEntity extends TameableEntity implements IAnimatable {
         if (isBreedingItem(itemStack)) {
             int i = getBreedingAge();
             if (!world.isClient && i == 0 && canEat()) {
+
                 eat(player, hand, itemStack);
                 lovePlayer(player);
                 System.out.println("SET OWNER " + player);
+                ((PlayerEntityDuck)player).setOwnedPetID(this.getId());
                 setOwner(player);
+
+
                 return ActionResult.SUCCESS;
             }
             if (world.isClient) {
