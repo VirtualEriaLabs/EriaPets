@@ -7,6 +7,8 @@ import net.minecraft.world.World;
 
 
 public class SlimerPetEntity extends BasePetEntity {
+    public static final String petName = "slimer";
+
     public SlimerPetEntity(EntityType<? extends TameableEntity> entityType, World world) {
         super(entityType, world);
     }

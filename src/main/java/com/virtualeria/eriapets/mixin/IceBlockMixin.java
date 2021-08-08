@@ -23,10 +23,16 @@ public class IceBlockMixin {
         double maxVelocity = 0.8;
         double xVel = Math.abs(entity.getVelocity().x);
         double zVel = Math.abs(entity.getVelocity().z);
-        if (entity instanceof PlayerEntity) {
-            if (world.getEntityById(((PlayerEntityDuck) entity).getOwnedPetID()) instanceof PinguPetEntity)
-                if ((xVel < maxVelocity && zVel < maxVelocity) && entity.isSprinting())
-                    entity.addVelocity(entity.getVelocity().x * 0.2f, entity.getVelocity().y * 0.2f, entity.getVelocity().z * 0.2f);
+
+        boolean isPlayer,isPinguPetEntity,hasVelocity = false;
+        isPlayer = entity instanceof PlayerEntity;
+
+        if (isPlayer) {
+            isPinguPetEntity = world.getEntityById(((PlayerEntityDuck) entity).getOwnedPetID()) instanceof PinguPetEntity;
+            hasVelocity = (xVel < maxVelocity && zVel < maxVelocity);
+
+            if (isPinguPetEntity && hasVelocity && entity.isSprinting())
+                entity.addVelocity(entity.getVelocity().x * 0.2f, entity.getVelocity().y * 0.2f, entity.getVelocity().z * 0.2f);
         }
 
     }

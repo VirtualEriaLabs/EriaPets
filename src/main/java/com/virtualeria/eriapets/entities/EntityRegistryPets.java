@@ -1,5 +1,6 @@
 package com.virtualeria.eriapets.entities;
 
+import com.virtualeria.eriapets.utils.Constants;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
 import net.minecraft.entity.Entity;
@@ -29,10 +30,10 @@ public class EntityRegistryPets {
         FabricDefaultAttributeRegistry.register(SLIMER_PET_ENTITY, BasePetEntity.createMobAttributes());
         FabricDefaultAttributeRegistry.register(PINGU_PET_ENTITY, BasePetEntity.createMobAttributes());
 
-        Registry.register(Registry.ENTITY_TYPE, new Identifier("eriapets", "basepet"),BASE_PET_ENTITY);
-        Registry.register(Registry.ENTITY_TYPE, new Identifier("eriapets", "otho"),OTHO_PET_ENTITY);
-        Registry.register(Registry.ENTITY_TYPE, new Identifier("eriapets", "slimer"),SLIMER_PET_ENTITY);
-        Registry.register(Registry.ENTITY_TYPE, new Identifier("eriapets", "pingu"),PINGU_PET_ENTITY);
+        Registry.register(Registry.ENTITY_TYPE, new Identifier(Constants.ModID, BasePetEntity.petName),BASE_PET_ENTITY);
+        Registry.register(Registry.ENTITY_TYPE, new Identifier(Constants.ModID, OthoPetEntity.petName),OTHO_PET_ENTITY);
+        Registry.register(Registry.ENTITY_TYPE, new Identifier(Constants.ModID, SlimerPetEntity.petName),SLIMER_PET_ENTITY);
+        Registry.register(Registry.ENTITY_TYPE, new Identifier(Constants.ModID, PinguPetEntity.petName),PINGU_PET_ENTITY);
     }
     public static <T extends Entity> EntityType<T> buildEntity(EntityType.EntityFactory<T> entity, Class<T> entityClass, float width, float height, SpawnGroup group) {
         String name = entityClass.getSimpleName().toLowerCase();

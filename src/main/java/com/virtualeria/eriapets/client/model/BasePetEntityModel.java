@@ -2,6 +2,7 @@ package com.virtualeria.eriapets.client.model;
 
 import com.virtualeria.eriapets.EriaPetsMain;
 import com.virtualeria.eriapets.entities.BasePetEntity;
+import com.virtualeria.eriapets.utils.Constants;
 import net.minecraft.util.Identifier;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.processor.IBone;
@@ -12,17 +13,17 @@ public class BasePetEntityModel extends AnimatedGeoModel<BasePetEntity> {
 
     @Override
     public Identifier getModelLocation(BasePetEntity basePetEntity) {
-        return new Identifier(EriaPetsMain.ModID, "geo/baseentity.geo.json");
+        return new Identifier(Constants.ModID, String.format(Constants.geoDirectory,BasePetEntity.petName));
     }
 
     @Override
     public Identifier getTextureLocation(BasePetEntity basePetEntity) {
-        return new Identifier(EriaPetsMain.ModID, "textures/baseentity.png");
+        return new Identifier(Constants.ModID, String.format(Constants.texturesDirectory,BasePetEntity.petName));
     }
 
     @Override
     public Identifier getAnimationFileLocation(BasePetEntity basePetEntity) {
-        return new Identifier(EriaPetsMain.ModID, "animations/baseentity.animation.json");
+        return new Identifier(Constants.ModID, String.format(Constants.animationsDirectory,BasePetEntity.petName));
     }
 
     @SuppressWarnings({ "rawtypes", "unchecked" })

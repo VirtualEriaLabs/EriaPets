@@ -22,7 +22,7 @@ import java.util.List;
 
 public class EriaPetsMain implements ModInitializer {
 
-    public static String ModID = "eriapets";
+
 
     private static final Logger LOGGER = LogManager.getLogger();
 
