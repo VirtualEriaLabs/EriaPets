@@ -39,7 +39,7 @@ public class EventsRegistry {
                 boolean isOwnerOfEntity = entity.isOwner(playerEntity.getUuid());
                 boolean isEntityAlive = entity.getCustomDeath() == 0;
 
-                if (isOwnerOfEntity && isEntityAlive && fallDistance < maxFallDistance && fallDistance >minFallDistance) {
+                if (isOwnerOfEntity && isEntityAlive && fallDistance < maxFallDistance && fallDistance > minFallDistance) {
                     entity.useAbility();
 
                     return ActionResult.SUCCESS;
