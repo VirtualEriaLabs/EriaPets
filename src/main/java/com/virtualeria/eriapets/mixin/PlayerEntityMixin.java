@@ -45,17 +45,16 @@ public abstract class PlayerEntityMixin extends Entity implements PlayerEntityDu
 
 
     @Inject(method = "attack", at = @At("HEAD"))
-    public void attack(Entity target, CallbackInfo ci){
+    public void attack(Entity target, CallbackInfo ci) {
         triggerFlinchEvent(target);
     }
 
 
-    public void triggerFlinchEvent(Entity target){
-          Entity ownedEntity = world.getEntityById(((PlayerEntityDuck) this).getOwnedPetID());
-          if(ownedEntity instanceof FlinchPetEntity)
-              ((FlinchPetEntity) ownedEntity).canPoisonTheTarget(target);
+    public void triggerFlinchEvent(Entity target) {
+        Entity ownedEntity = world.getEntityById(((PlayerEntityDuck) this).getOwnedPetID());
+        if (ownedEntity instanceof FlinchPetEntity)
+            ((FlinchPetEntity) ownedEntity).canPoisonTheTarget(target);
     }
-
 
 
 }

@@ -25,8 +25,8 @@ public class FlinchPetEntityRenderer extends GeoEntityRenderer<FlinchPetEntity> 
     public void render(GeoModel model, FlinchPetEntity animatable, float partialTicks, RenderLayer type, MatrixStack matrixStackIn, VertexConsumerProvider renderTypeBuffer, VertexConsumer vertexBuilder, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
         super.render(model, animatable, partialTicks, type, matrixStackIn, renderTypeBuffer, vertexBuilder, packedLightIn, packedOverlayIn, red, green, blue, alpha);
 
-        if(animatable.abilityIsCooledDown()) {
+        if (animatable.abilityIsCooledDown()) {
             model.getBone("hat").get().setHidden(false);
-        }else model.getBone("hat").get().setHidden(true);
+        } else model.getBone("hat").get().setHidden(true);
     }
 }

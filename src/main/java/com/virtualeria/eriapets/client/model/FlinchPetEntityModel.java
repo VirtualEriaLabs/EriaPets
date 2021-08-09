@@ -1,6 +1,6 @@
 package com.virtualeria.eriapets.client.model;
 
-import com.virtualeria.eriapets.entities.BasePetEntity;
+
 import com.virtualeria.eriapets.entities.FlinchPetEntity;
 import com.virtualeria.eriapets.utils.Constants;
 import net.minecraft.util.Identifier;
@@ -17,15 +17,15 @@ public class FlinchPetEntityModel extends AnimatedGeoModel<FlinchPetEntity> {
 
     @Override
     public Identifier getTextureLocation(FlinchPetEntity flinchPetEntity) {
-        return new Identifier(Constants.ModID, String.format(Constants.texturesDirectory,FlinchPetEntity.petName));
+        return new Identifier(Constants.ModID, String.format(Constants.texturesDirectory, FlinchPetEntity.petName));
     }
 
     @Override
     public Identifier getAnimationFileLocation(FlinchPetEntity flinchPetEntity) {
-        return new Identifier(Constants.ModID, String.format(Constants.animationsDirectory,FlinchPetEntity.petName));
+        return new Identifier(Constants.ModID, String.format(Constants.animationsDirectory, FlinchPetEntity.petName));
     }
 
-    @SuppressWarnings({ "rawtypes", "unchecked" })
+    @SuppressWarnings({"rawtypes", "unchecked"})
     @Override
     public void setLivingAnimations(FlinchPetEntity entity, Integer uniqueID, AnimationEvent customPredicate) {
         super.setLivingAnimations(entity, uniqueID, customPredicate);
