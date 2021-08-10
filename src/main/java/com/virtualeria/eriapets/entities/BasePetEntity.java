@@ -129,7 +129,7 @@ public class BasePetEntity extends TameableEntity implements IAnimatable {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.walk", false));
         } else if (this.getCustomDeath() > 0) {
             if (this.getCustomDeath() == 2 && event.getController().getAnimationState() == AnimationState.Stopped) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation("", true));
+                event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.deathPos", true));
             } else if (this.getCustomDeath() == 1) {
                 event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.death", false));
                 this.setCustomDeath(2);
