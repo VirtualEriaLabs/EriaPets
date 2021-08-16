@@ -1,7 +1,6 @@
 package com.virtualeria.eriapets.client.renderer;
 
 import com.virtualeria.eriapets.entities.EntityRegistryPets;
-import com.virtualeria.eriapets.entities.FlinchPetEntity;
 import net.fabricmc.fabric.api.client.rendereregistry.v1.EntityRendererRegistry;
 
 public class RegisterRenderers {
@@ -12,5 +11,6 @@ public class RegisterRenderers {
         EntityRendererRegistry.INSTANCE.register(EntityRegistryPets.SLIMER_PET_ENTITY, SlimerPetEntityRenderer::new);
         EntityRendererRegistry.INSTANCE.register(EntityRegistryPets.PINGU_PET_ENTITY, PinguPetEntityRenderer::new);
         EntityRendererRegistry.INSTANCE.register(EntityRegistryPets.FLINCH_PET_ENTITY, FlinchPetEntityRenderer::new);
+        EntityRendererRegistry.INSTANCE.register(EntityRegistryPets.GNOME_PET_ENTITY, GnomePetEntityRenderer::new);
     }
 }

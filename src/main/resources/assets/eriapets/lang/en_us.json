@@ -3,5 +3,6 @@
   "entity.eriapets.flinch" : "Flinch",
   "entity.eriapets.otho" : "Otho",
   "entity.eriapets.pingu" : "Pingu",
-  "entity.eriapets.slimer" : "Slimer"
+  "entity.eriapets.slimer" : "Slimer",
+  "entity.eriapets.gnome" : "Gnome"
 }
