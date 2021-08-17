@@ -52,7 +52,7 @@ public class StealGoldTask extends Task<MobEntity> {
 
     protected void keepRunning(ServerWorld serverWorld, MobEntity entity, long l) {
         moveTo(target.getPos(), entity);
-        if (entity.squaredDistanceTo(target) < 2 && stealedItem == null) {
+        if (stealedItem == null && entity.squaredDistanceTo(target) < 2) {
             stealItem();
         } else if (this.stealedItem != null) {
             if (((TameableEntity) entity).getOwner() != null) {
@@ -101,7 +101,7 @@ public class StealGoldTask extends Task<MobEntity> {
     }
 
     protected boolean shouldKeepRunning(ServerWorld serverWorld, MobEntity mobEntity, long l) {
-        return this.target != null && (target.getInventory().contains(ItemTags.PIGLIN_LOVED) || this.stealedItem != null);
+        return this.target != null && (this.stealedItem != null || target.getInventory().contains(ItemTags.PIGLIN_LOVED));
     }
 
 
