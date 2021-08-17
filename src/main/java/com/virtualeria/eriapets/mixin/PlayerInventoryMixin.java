@@ -16,18 +16,19 @@ import java.util.List;
 @Mixin(PlayerInventory.class)
 public class PlayerInventoryMixin implements PlayerInventoryDuck {
 
-    @Shadow @Final
+    @Shadow
+    @Final
     private List<DefaultedList<ItemStack>> combinedInventory;
 
     public ItemStack getFirstTagItemSlotId(Tag<Item> tag) {
         Iterator var2 = combinedInventory.iterator();
 
-        while(var2.hasNext()) {
-            List<ItemStack> list = (List)var2.next();
+        while (var2.hasNext()) {
+            List<ItemStack> list = (List) var2.next();
             Iterator var4 = list.iterator();
 
-            while(var4.hasNext()) {
-                ItemStack itemStack = (ItemStack)var4.next();
+            while (var4.hasNext()) {
+                ItemStack itemStack = (ItemStack) var4.next();
                 if (!itemStack.isEmpty() && itemStack.isIn(tag)) {
                     return itemStack;
                 }

@@ -47,8 +47,6 @@ public class FollowOwnerTask extends Task<TameableEntity> {
     protected boolean shouldRun(ServerWorld serverWorld, TameableEntity mobEntity) {
 
         LivingEntity livingEntity = mobEntity.getOwner();
-        if (livingEntity != null && mobEntity.getOwner() != null)
-            System.out.println("DISTANCE " + mobEntity.squaredDistanceTo(livingEntity) + " (double)  " + (double) (this.minDistance * this.minDistance));
         if (livingEntity == null) {
             return false;
         } else if (livingEntity.isSpectator()) {
@@ -69,7 +67,6 @@ public class FollowOwnerTask extends Task<TameableEntity> {
 
         Optional<Vec3d> optional = Optional.ofNullable(entity.getOwner().getPos());
         entity.getBrain().remember(MemoryModuleType.WALK_TARGET, optional.map((pos) -> {
-            System.out.println("WALK TARGET " + pos);
             return new WalkTarget(pos, (float) this.speed, 0);
         }));
 
@@ -91,24 +88,24 @@ public class FollowOwnerTask extends Task<TameableEntity> {
         entity.getLookControl().lookAt(this.owner, 10.0F, (float) entity.getLookPitchSpeed());
         if (!entity.isLeashed() && !entity.hasVehicle()) {
             if (entity.squaredDistanceTo(this.owner) >= 144.0D) {
-                 this.tryTeleport(entity);
+                this.tryTeleport(entity);
             } else {
                 Optional<Vec3d> optional = Optional.ofNullable(entity.getOwner().getPos());
                 entity.getBrain().remember(MemoryModuleType.WALK_TARGET, optional.map((pos) -> {
-                    System.out.println("WALK TARGET " + pos);
                     return new WalkTarget(pos, (float) this.speed, 0);
                 }));
             }
         }
     }
+
     private void tryTeleport(TameableEntity entity) {
         BlockPos blockPos = this.owner.getBlockPos();
 
-        for(int i = 0; i < 10; ++i) {
-            int j = this.getRandomInt(-3, 3,entity);
-            int k = this.getRandomInt(-1, 1,entity);
-            int l = this.getRandomInt(-3, 3,entity);
-            boolean bl = this.tryTeleportTo(blockPos.getX() + j, blockPos.getY() + k, blockPos.getZ() + l,entity);
+        for (int i = 0; i < 10; ++i) {
+            int j = this.getRandomInt(-3, 3, entity);
+            int k = this.getRandomInt(-1, 1, entity);
+            int l = this.getRandomInt(-3, 3, entity);
+            boolean bl = this.tryTeleportTo(blockPos.getX() + j, blockPos.getY() + k, blockPos.getZ() + l, entity);
             if (bl) {
                 return;
             }
@@ -116,19 +113,19 @@ public class FollowOwnerTask extends Task<TameableEntity> {
 
     }
 
-    private boolean tryTeleportTo(int x, int y, int z,TameableEntity tameable) {
-        if (Math.abs((double)x - this.owner.getX()) < 2.0D && Math.abs((double)z - this.owner.getZ()) < 2.0D) {
+    private boolean tryTeleportTo(int x, int y, int z, TameableEntity tameable) {
+        if (Math.abs((double) x - this.owner.getX()) < 2.0D && Math.abs((double) z - this.owner.getZ()) < 2.0D) {
             return false;
-        } else if (!this.canTeleportTo(new BlockPos(x, y, z),tameable)) {
+        } else if (!this.canTeleportTo(new BlockPos(x, y, z), tameable)) {
             return false;
         } else {
-            tameable.refreshPositionAndAngles((double)x + 0.5D, (double)y, (double)z + 0.5D, tameable.getYaw(), tameable.getPitch());
+            tameable.refreshPositionAndAngles((double) x + 0.5D, (double) y, (double) z + 0.5D, tameable.getYaw(), tameable.getPitch());
             tameable.getNavigation().stop();
             return true;
         }
     }
 
-    private boolean canTeleportTo(BlockPos pos,TameableEntity tameable) {
+    private boolean canTeleportTo(BlockPos pos, TameableEntity tameable) {
         PathNodeType pathNodeType = LandPathNodeMaker.getLandNodeType(tameable.world, pos.mutableCopy());
         if (pathNodeType != PathNodeType.WALKABLE) {
             return false;
@@ -143,7 +140,7 @@ public class FollowOwnerTask extends Task<TameableEntity> {
         }
     }
 
-    private int getRandomInt(int min, int max,TameableEntity entity) {
+    private int getRandomInt(int min, int max, TameableEntity entity) {
         return entity.getRandom().nextInt(max - min + 1) + min;
     }
 

@@ -31,13 +31,13 @@ public class GnomePetBrain {
     }
 
     private static void addCoreActivities(Brain<GnomePetEntity> brain) {
-       brain.setTaskList(Activity.CORE, 0, ImmutableList.of(
-                new FollowOwnerTask( 0.5f, 6f, 20, false),
+        brain.setTaskList(Activity.CORE, 0, ImmutableList.of(
+                new FollowOwnerTask(0.5f, 6f, 20, false),
                 new StealGoldTask(),
-                new AttackTask<>(5,1),
+                new AttackTask<>(5, 1),
                 new StayAboveWaterTask(0.8F),
                 new WanderAroundTask()
-            ));
+        ));
     }
 
     private static void addIdleActivities(Brain<GnomePetEntity> brain) {
@@ -46,9 +46,9 @@ public class GnomePetBrain {
                 Pair.of(1, new TimeLimitedTask(new FollowMobTask(EntityType.PLAYER, 6.0F), UniformIntProvider.create(30, 60))),
                 Pair.of(2, new RandomTask(
                         ImmutableList.of(Pair.of(new StrollTask(WALKING_SPEED), 2),
-                                         Pair.of(new GoTowardsLookTarget(1.0F, 10), 2),
-                                         Pair.of(new WaitTask(50, 100), 1)))))
-                );
+                                Pair.of(new GoTowardsLookTarget(1.0F, 10), 2),
+                                Pair.of(new WaitTask(50, 100), 1)))))
+        );
 
     }
 

@@ -18,7 +18,6 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.tag.ItemTags;
 import net.minecraft.util.math.Vec3d;
 
-
 import java.util.List;
 
 import java.util.Optional;
@@ -28,73 +27,79 @@ public class StealGoldTask extends Task<MobEntity> {
     PlayerEntity target;
     ItemStack stealedItem;
     Vec3d startPos;
+
     public StealGoldTask() {
         super(ImmutableMap.of(MemoryModuleType.NEAREST_PLAYERS, MemoryModuleState.VALUE_PRESENT));
     }
 
     protected boolean shouldRun(ServerWorld serverWorld, MobEntity mobEntity) {
-        return getNearestPlayer(mobEntity).stream().anyMatch(playerEntity -> playerEntity.getInventory().contains(ItemTags.PIGLIN_LOVED)) &&
-                ((BasePetEntity)mobEntity).abilityIsCooledDown();
+        return (getNearestPlayer(mobEntity).stream().anyMatch(playerEntity -> playerEntity.getInventory().contains(ItemTags.PIGLIN_LOVED)) &&
+                ((BasePetEntity) mobEntity).abilityIsCooledDown()) || stealedItem != null;
     }
 
     private List<PlayerEntity> getNearestPlayer(MobEntity mob) {
-        return  mob.getBrain().getOptionalMemory(MemoryModuleType.NEAREST_PLAYERS).get();
+        return mob.getBrain().getOptionalMemory(MemoryModuleType.NEAREST_PLAYERS).get();
     }
 
     protected void run(ServerWorld world, MobEntity entity, long time) {
-        target =  getNearestPlayer(entity).stream().filter(playerEntity -> playerEntity.getInventory().contains(ItemTags.PIGLIN_LOVED)).toList().get(0);
-        Optional<Vec3d> optional = Optional.ofNullable(target.getPos());
-        entity.getBrain().remember(MemoryModuleType.WALK_TARGET, optional.map((pos) -> new WalkTarget(pos, (float) 0.8f, 0)));
-        startPos = entity.getPos();
+        List<PlayerEntity> playerList = getNearestPlayer(entity).stream().filter(playerEntity -> playerEntity.getInventory().contains(ItemTags.PIGLIN_LOVED)).toList();
+        if(playerList.size() > 0){
+            this.target = playerList.get(0);
+            moveTo(this.target.getPos(), entity);
+            startPos = entity.getPos();
+        }
     }
+
     protected void keepRunning(ServerWorld serverWorld, MobEntity entity, long l) {
-        Optional<Vec3d> optional = Optional.ofNullable(target.getPos());
-        entity.getBrain().remember(MemoryModuleType.WALK_TARGET, optional.map((pos) -> new WalkTarget(pos, (float) 0.8f, 0)));
+        moveTo(target.getPos(), entity);
         if (entity.squaredDistanceTo(target) < 2 && stealedItem == null) {
             stealItem();
-        }else if(this.stealedItem != null){
-            if(((TameableEntity)entity).getOwner() != null){
+        } else if (this.stealedItem != null) {
+            if (((TameableEntity) entity).getOwner() != null) {
                 returnToOwner(entity);
-                Vec3d ownerPos = ((TameableEntity)entity).getOwner().getPos();
-                if(entity.squaredDistanceTo(ownerPos) < 2)
-                    dropStolenItem(entity,ownerPos);
-            }else{
+                Vec3d ownerPos = ((TameableEntity) entity).getOwner().getPos();
+                if (entity.squaredDistanceTo(ownerPos) < 2)
+                    dropStolenItem(entity, ownerPos);
+            } else {
                 hideItem(entity);
-                if(entity.squaredDistanceTo(this.startPos) < 2)
-                    dropStolenItem(entity,startPos);
+                if (entity.squaredDistanceTo(this.startPos) < 2)
+                    dropStolenItem(entity, startPos);
             }
         }
     }
 
 
-    private void stealItem(){
-        ItemStack item =  ((PlayerInventoryDuck) this.target.getInventory()).getFirstTagItemSlotId(ItemTags.PIGLIN_LOVED);
-        this.target.damage(DamageSource.MAGIC,1);
+    private void stealItem() {
+        ItemStack item = ((PlayerInventoryDuck) this.target.getInventory()).getFirstTagItemSlotId(ItemTags.PIGLIN_LOVED);
+        this.target.damage(DamageSource.MAGIC, 1);
         this.stealedItem = item;
         this.target.getInventory().removeOne(item);
     }
-    private void dropStolenItem(MobEntity entity, Vec3d pos){
-            ((BasePetEntity)entity).useAbility();
-            this.stealedItem.setHolder(null);
-            entity.getEntityWorld().spawnEntity(new ItemEntity(entity.getEntityWorld(), pos.getX(),pos.getY(),pos.getZ(),this.stealedItem));
-            this.stealedItem = null;
-            this.startPos = null;
-            this.target = null;
-    }
-    private void hideItem(MobEntity entity){
-        moveTo(this.startPos,entity);
 
+    private void dropStolenItem(MobEntity entity, Vec3d pos) {
+        ((BasePetEntity) entity).useAbility();
+        this.stealedItem.setHolder(null);
+        entity.getEntityWorld().spawnEntity(new ItemEntity(entity.getEntityWorld(), pos.getX(), pos.getY(), pos.getZ(), this.stealedItem));
+        this.stealedItem = null;
+        this.startPos = null;
+        this.target = null;
     }
-    private void returnToOwner(MobEntity entity){
-        LivingEntity owner =  ((TameableEntity)entity).getOwner();
-        moveTo(owner.getPos(),entity);
+
+    private void hideItem(MobEntity entity) {
+        moveTo(this.startPos, entity);
+    }
+
+    private void returnToOwner(MobEntity entity) {
+        LivingEntity owner = ((TameableEntity) entity).getOwner();
+        moveTo(owner.getPos(), entity);
         this.stealedItem = null;
     }
 
-    private void moveTo(Vec3d position,MobEntity entity){
+    private void moveTo(Vec3d position, MobEntity entity) {
         Optional<Vec3d> optional = Optional.ofNullable(position);
         entity.getBrain().remember(MemoryModuleType.WALK_TARGET, optional.map((pos) -> new WalkTarget(pos, (float) 0.8f, 0)));
     }
+
     protected boolean shouldKeepRunning(ServerWorld serverWorld, MobEntity mobEntity, long l) {
         return this.target != null && (target.getInventory().contains(ItemTags.PIGLIN_LOVED) || this.stealedItem != null);
     }
