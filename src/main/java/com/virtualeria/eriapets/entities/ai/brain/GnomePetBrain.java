@@ -18,7 +18,6 @@ public class GnomePetBrain {
     private static final float WALKING_SPEED = 0.3f;
 
     public static Brain<?> create(Brain<GnomePetEntity> brain) {
-        System.out.println("GNOME BRAIN CREATE ");
         addCoreActivities(brain);
         addIdleActivities(brain);
         brain.setCoreActivities(ImmutableSet.of(Activity.CORE));
