@@ -1,7 +1,6 @@
 package com.virtualeria.eriapets.mixin;
 
 import com.virtualeria.eriapets.access.PlayerInventoryDuck;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -30,7 +29,7 @@ public class PlayerInventoryMixin implements PlayerInventoryDuck {
             while(var4.hasNext()) {
                 ItemStack itemStack = (ItemStack)var4.next();
                 if (!itemStack.isEmpty() && itemStack.isIn(tag)) {
-                        return itemStack;
+                    return itemStack;
                 }
             }
         }

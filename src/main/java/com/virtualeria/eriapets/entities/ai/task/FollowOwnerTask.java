@@ -1,7 +1,6 @@
 package com.virtualeria.eriapets.entities.ai.task;
 
 import com.google.common.collect.ImmutableMap;
-import com.virtualeria.eriapets.entities.BasePetEntity;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.LeavesBlock;
 import net.minecraft.entity.LivingEntity;
