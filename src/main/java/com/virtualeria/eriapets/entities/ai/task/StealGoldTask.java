@@ -33,8 +33,17 @@ public class StealGoldTask extends Task<MobEntity> {
     }
 
     protected boolean shouldRun(ServerWorld serverWorld, MobEntity mobEntity) {
-        return (getNearestPlayer(mobEntity).stream().anyMatch(playerEntity -> playerEntity.getInventory().contains(ItemTags.PIGLIN_LOVED)) &&
-                ((BasePetEntity) mobEntity).abilityIsCooledDown()) || stealedItem != null;
+
+        LivingEntity owner = ((BasePetEntity) mobEntity).getOwner();
+
+        return (getNearestPlayer(mobEntity).stream().anyMatch(playerEntity -> {
+            if (owner != null && owner.getUuid().equals(playerEntity.getUuid())) {
+                return false;
+            } else {
+                return playerEntity.getInventory().contains(ItemTags.PIGLIN_LOVED);
+            }
+
+        }) && ((BasePetEntity) mobEntity).abilityIsCooledDown()) || stealedItem != null;
     }
 
     private List<PlayerEntity> getNearestPlayer(MobEntity mob) {
@@ -43,7 +52,7 @@ public class StealGoldTask extends Task<MobEntity> {
 
     protected void run(ServerWorld world, MobEntity entity, long time) {
         List<PlayerEntity> playerList = getNearestPlayer(entity).stream().filter(playerEntity -> playerEntity.getInventory().contains(ItemTags.PIGLIN_LOVED)).toList();
-        if(playerList.size() > 0){
+        if (playerList.size() > 0) {
             this.target = playerList.get(0);
             moveTo(this.target.getPos(), entity);
             startPos = entity.getPos();
@@ -92,7 +101,7 @@ public class StealGoldTask extends Task<MobEntity> {
     private void returnToOwner(MobEntity entity) {
         LivingEntity owner = ((TameableEntity) entity).getOwner();
         moveTo(owner.getPos(), entity);
-        this.stealedItem = null;
+
     }
 
     private void moveTo(Vec3d position, MobEntity entity) {
