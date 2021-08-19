@@ -10,10 +10,11 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ai.brain.Activity;
 import net.minecraft.entity.ai.brain.Brain;
 
+
 import net.minecraft.entity.ai.brain.task.*;
 import net.minecraft.util.math.intprovider.UniformIntProvider;
 
-import java.util.List;
+
 
 public class GnomePetBrain {
     private static final float WALKING_SPEED = 0.3f;
@@ -44,12 +45,14 @@ public class GnomePetBrain {
     private static void addIdleActivities(Brain<GnomePetEntity> brain) {
 
         brain.setTaskList(Activity.IDLE, ImmutableList.of(
-                Pair.of(1, new TimeLimitedTask(new FollowMobTask(EntityType.PLAYER, 6.0F), UniformIntProvider.create(30, 60))),
+                Pair.of(1, new TimeLimitedTask(new FollowMobTask(EntityType.PLAYER, 6.0F), UniformIntProvider.create(50, 90))),
                 Pair.of(2, new RandomTask(
                         ImmutableList.of(Pair.of(new StrollTask(WALKING_SPEED), 2),
-                                Pair.of(new GoTowardsLookTarget(1.0F, 10), 2),
-                                Pair.of(new WaitTask(50, 100), 1)))))
+                                Pair.of(new WaitTask(50, 100), 1)))),
+                Pair.of(3,new LookAroundTask(60,90))
+                )
         );
+
 
     }
 
