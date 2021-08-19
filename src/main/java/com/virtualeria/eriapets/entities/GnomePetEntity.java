@@ -55,7 +55,7 @@ public class GnomePetEntity extends BasePetEntity {
 
     @Override
     protected void initGoals() {
-
+        //Overridden to not use old goal system
     }
 
     @Override

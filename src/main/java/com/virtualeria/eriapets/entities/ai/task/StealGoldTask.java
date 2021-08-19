@@ -37,12 +37,11 @@ public class StealGoldTask extends Task<MobEntity> {
         LivingEntity owner = ((BasePetEntity) mobEntity).getOwner();
 
         return (getNearestPlayer(mobEntity).stream().anyMatch(playerEntity -> {
+            //If the target to steal the gold is the owner it gets removed
             if (owner != null && owner.getUuid().equals(playerEntity.getUuid())) {
                 return false;
-            } else {
-                return playerEntity.getInventory().contains(ItemTags.PIGLIN_LOVED);
             }
-
+            return playerEntity.getInventory().contains(ItemTags.PIGLIN_LOVED);
         }) && ((BasePetEntity) mobEntity).abilityIsCooledDown()) || stealedItem != null;
     }
 
@@ -70,6 +69,7 @@ public class StealGoldTask extends Task<MobEntity> {
                 if (entity.squaredDistanceTo(ownerPos) < 2)
                     dropStolenItem(entity, ownerPos);
             } else {
+                //If the pet doesn't have owner the gold gets drop at the starting position
                 hideItem(entity);
                 if (entity.squaredDistanceTo(this.startPos) < 2)
                     dropStolenItem(entity, startPos);

@@ -53,7 +53,7 @@ public abstract class PlayerEntityMixin extends Entity implements PlayerEntityDu
     public void triggerFlinchEvent(Entity target) {
         Entity ownedEntity = world.getEntityById(((PlayerEntityDuck) this).getOwnedPetID());
         if (ownedEntity instanceof FlinchPetEntity)
-            ((FlinchPetEntity) ownedEntity).canPoisonTheTarget(target);
+            ((FlinchPetEntity) ownedEntity).canPoisonTarget(target);
     }
 
 

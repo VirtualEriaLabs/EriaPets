@@ -16,7 +16,7 @@ public class FlinchPetEntity extends BasePetEntity {
     }
 
 
-    public void canPoisonTheTarget(Entity target) {
+    public void canPoisonTarget(Entity target) {
         if (abilityIsCooledDown()) {
             useAbility();
             if (target instanceof LivingEntity)

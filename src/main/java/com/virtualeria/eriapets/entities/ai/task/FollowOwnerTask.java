@@ -20,10 +20,6 @@ import java.util.Optional;
 
 public class FollowOwnerTask extends Task<TameableEntity> {
 
-    private static final int HORIZONTAL_RANGE = 2;
-    private static final int HORIZONTAL_VARIATION = 3;
-    private static final int VERTICAL_VARIATION = 1;
-
     private LivingEntity owner;
 
     private final double speed;
@@ -46,6 +42,7 @@ public class FollowOwnerTask extends Task<TameableEntity> {
 
     protected boolean shouldRun(ServerWorld serverWorld, TameableEntity mobEntity) {
 
+
         LivingEntity livingEntity = mobEntity.getOwner();
         if (livingEntity == null) {
             return false;
@@ -55,22 +52,16 @@ public class FollowOwnerTask extends Task<TameableEntity> {
             return false;
         } else if (mobEntity.squaredDistanceTo(livingEntity) < (double) (this.minDistance * this.minDistance)) {
             return false;
-
-        } else {
-            this.owner = livingEntity;
-            return true;
         }
+
+        this.owner = livingEntity;
+        return true;
     }
 
 
     protected void run(ServerWorld world, TameableEntity entity, long time) {
-
         Optional<Vec3d> optional = Optional.ofNullable(entity.getOwner().getPos());
-        entity.getBrain().remember(MemoryModuleType.WALK_TARGET, optional.map((pos) -> {
-            return new WalkTarget(pos, (float) this.speed, 0);
-        }));
-
-
+        entity.getBrain().remember(MemoryModuleType.WALK_TARGET, optional.map((pos) -> new WalkTarget(pos, (float) this.speed, 0)));
     }
 
     protected boolean shouldKeepRunning(ServerWorld serverWorld, TameableEntity mobEntity, long l) {
@@ -78,9 +69,9 @@ public class FollowOwnerTask extends Task<TameableEntity> {
             return false;
         } else if (mobEntity.isSitting()) {
             return false;
-        } else {
-            return !(mobEntity.squaredDistanceTo(mobEntity.getOwner()) <= (double) (this.maxDistance * this.maxDistance));
         }
+
+        return !(mobEntity.squaredDistanceTo(mobEntity.getOwner()) <= (double) (this.maxDistance * this.maxDistance));
 
     }
 
@@ -91,9 +82,7 @@ public class FollowOwnerTask extends Task<TameableEntity> {
                 this.tryTeleport(entity);
             } else {
                 Optional<Vec3d> optional = Optional.ofNullable(entity.getOwner().getPos());
-                entity.getBrain().remember(MemoryModuleType.WALK_TARGET, optional.map((pos) -> {
-                    return new WalkTarget(pos, (float) this.speed, 0);
-                }));
+                entity.getBrain().remember(MemoryModuleType.WALK_TARGET, optional.map((pos) -> new WalkTarget(pos, (float) this.speed, 0)));
             }
         }
     }

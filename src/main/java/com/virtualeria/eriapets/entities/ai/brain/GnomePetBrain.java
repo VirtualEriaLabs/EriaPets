@@ -9,6 +9,7 @@ import com.virtualeria.eriapets.entities.ai.task.StealGoldTask;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ai.brain.Activity;
 import net.minecraft.entity.ai.brain.Brain;
+
 import net.minecraft.entity.ai.brain.task.*;
 import net.minecraft.util.math.intprovider.UniformIntProvider;
 
@@ -27,7 +28,7 @@ public class GnomePetBrain {
     }
 
     public static void updateActivities(GnomePetEntity goat) {
-        goat.getBrain().resetPossibleActivities((List) ImmutableList.of(Activity.IDLE));
+        goat.getBrain().resetPossibleActivities(ImmutableList.of(Activity.IDLE));
     }
 
     private static void addCoreActivities(Brain<GnomePetEntity> brain) {
