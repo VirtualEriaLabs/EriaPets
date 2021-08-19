@@ -11,7 +11,9 @@
     "PlayerInventoryMixin"
   ],
   "client": [
-    "EriaMixin"
+    "EriaMixin",
+    "SkyPropertiesMixin",
+    "BackgroundRenderer"
   ],
   "injectors": {
     "defaultRequire": 1

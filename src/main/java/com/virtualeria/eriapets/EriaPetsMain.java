@@ -28,7 +28,6 @@ public class EriaPetsMain implements ModInitializer {
 
     @Override
     public void onInitialize() {
-
         LOGGER.info("[EriaPets] Initialize");
         GeckoLib.initialize();
         EntityRegistryPets.initialize();
