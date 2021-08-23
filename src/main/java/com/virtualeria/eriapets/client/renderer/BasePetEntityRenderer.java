@@ -5,8 +5,10 @@ import com.virtualeria.eriapets.entities.BasePetEntity;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.MinecraftClientGame;
 import net.minecraft.client.font.TextRenderer;
 
+import net.minecraft.client.gui.screen.ingame.InventoryScreen;
 import net.minecraft.client.render.VertexConsumerProvider;
 
 import net.minecraft.client.render.entity.EntityRenderer;
@@ -35,8 +37,6 @@ public class BasePetEntityRenderer extends GeoEntityRenderer<BasePetEntity> {
     @Override
     public void render(BasePetEntity entity, float entityYaw, float partialTicks, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int packedLightIn) {
         super.render(entity, entityYaw, partialTicks, matrices, vertexConsumers, packedLightIn);
-
-
     }
 
     public void drawHungry(MatrixStack matrices,BasePetEntity entity,VertexConsumerProvider vertexConsumers,int packedLightIn){

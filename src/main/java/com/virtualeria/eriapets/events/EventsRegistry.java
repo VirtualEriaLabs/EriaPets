@@ -1,16 +1,14 @@
 package com.virtualeria.eriapets.events;
 
+import com.virtualeria.eriapets.access.PlayerEntityDuck;
 import com.virtualeria.eriapets.entities.OthoPetEntity;
 import com.virtualeria.eriapets.entities.SlimerPetEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.ActionResult;
-import net.minecraft.util.math.Box;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import java.util.List;
 
 
 public class EventsRegistry {
@@ -28,14 +26,13 @@ public class EventsRegistry {
         SlimerFallDamageCallback.EVENT.register((player, fallDistance) -> {
             PlayerEntity playerEntity = player;
 
-            float radius = 10;
             float maxFallDistance = 14;
             float minFallDistance = 2;
 
-            List<SlimerPetEntity> listEntities = player.getEntityWorld().getEntitiesByClass(SlimerPetEntity.class, new Box(player.getX() - radius, 0, player.getZ() - radius, player.getX() + radius, 256, player.getZ() + radius), SlimerPetEntity::isAlive);
+            Entity ownedEntity = player.world.getEntityById(((PlayerEntityDuck) player).getOwnedPetID());
 
-            for (Entity entidad : listEntities) {
-                SlimerPetEntity entity = (SlimerPetEntity) entidad;
+            if (ownedEntity instanceof SlimerPetEntity) {
+                SlimerPetEntity entity = (SlimerPetEntity) ownedEntity;
                 boolean isOwnerOfEntity = entity.isOwner(playerEntity.getUuid());
                 boolean isEntityAlive = entity.getCustomDeath() == 0;
 
@@ -53,10 +50,10 @@ public class EventsRegistry {
         OthoShellBreakCallback.EVENT.register((player) -> {
             ServerPlayerEntity playerEntity = (ServerPlayerEntity) player;
 
-            float radius = 10;
-            List<OthoPetEntity> listEntities = player.getEntityWorld().getEntitiesByClass(OthoPetEntity.class, new Box(player.getX() - radius, 0, player.getZ() - radius, player.getX() + radius, 256, player.getZ() + radius), OthoPetEntity::isAlive);
-            for (Entity entidad : listEntities) {
-                OthoPetEntity othoEntity = (OthoPetEntity) entidad;
+            Entity ownedEntity = player.world.getEntityById(((PlayerEntityDuck) player).getOwnedPetID());
+
+            if (ownedEntity instanceof OthoPetEntity) {
+                OthoPetEntity othoEntity = (OthoPetEntity) ownedEntity;
                 boolean isOwnerOfEntity = othoEntity.isOwner(playerEntity.getUuid());
                 boolean isEntityAlive = othoEntity.getCustomDeath() == 0;
                 if (isOwnerOfEntity && isEntityAlive && othoEntity.abilityIsCooledDown()) {
@@ -65,6 +62,8 @@ public class EventsRegistry {
                     return ActionResult.SUCCESS;
                 }
             }
+
+
             return ActionResult.FAIL;
         });
     }

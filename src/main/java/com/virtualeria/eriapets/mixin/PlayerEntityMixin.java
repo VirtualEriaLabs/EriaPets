@@ -1,6 +1,7 @@
 package com.virtualeria.eriapets.mixin;
 
 import com.virtualeria.eriapets.access.PlayerEntityDuck;
+import com.virtualeria.eriapets.entities.FlinchPetEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.data.DataTracker;
@@ -40,6 +41,19 @@ public abstract class PlayerEntityMixin extends Entity implements PlayerEntityDu
     @Override
     public int getOwnedPetID() {
         return (Integer) dataTracker.get(OWNEDPETID);
+    }
+
+
+    @Inject(method = "attack", at = @At("HEAD"))
+    public void attack(Entity target, CallbackInfo ci) {
+        triggerFlinchEvent(target);
+    }
+
+
+    public void triggerFlinchEvent(Entity target) {
+        Entity ownedEntity = world.getEntityById(((PlayerEntityDuck) this).getOwnedPetID());
+        if (ownedEntity instanceof FlinchPetEntity)
+            ((FlinchPetEntity) ownedEntity).canPoisonTarget(target);
     }
 
 
