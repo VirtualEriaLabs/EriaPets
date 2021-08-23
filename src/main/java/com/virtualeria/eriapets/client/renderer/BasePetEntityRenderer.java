@@ -37,10 +37,6 @@ public class BasePetEntityRenderer extends GeoEntityRenderer<BasePetEntity> {
     @Override
     public void render(BasePetEntity entity, float entityYaw, float partialTicks, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int packedLightIn) {
         super.render(entity, entityYaw, partialTicks, matrices, vertexConsumers, packedLightIn);
-
-
-        System.out.println("HOLA" +  MouseInfo.getPointerInfo().getLocation());
-
     }
 
     public void drawHungry(MatrixStack matrices,BasePetEntity entity,VertexConsumerProvider vertexConsumers,int packedLightIn){

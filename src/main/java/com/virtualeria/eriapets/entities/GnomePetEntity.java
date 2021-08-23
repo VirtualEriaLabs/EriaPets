@@ -62,6 +62,11 @@ public class GnomePetEntity extends BasePetEntity {
     }
 
     @Override
+    public void customAbility(){
+        //Don't do anything passive ability
+    }
+
+    @Override
     public boolean isBreedingItem(ItemStack stack) {
         return stack.getItem() == Items.DIAMOND;
     }
