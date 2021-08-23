@@ -1,0 +1,59 @@
+/**
+ * To use this task just use put the :generateBasePet with property petName
+ * Like this: generateBasePet -PpetName=yourname
+ * If property is not set it will pick your branch name as pet name
+ */
+task generateBasePet {
+    group = "eriapets"
+
+    def name = ""
+
+    if (!project.hasProperty("petName")) {
+        logger.debug('Not petName property found, trying to find in git branch name...')
+        try {
+            name = obtainPetNameByGitBranchName()
+
+        }
+        catch (Exception e) {
+            logger.error("Error trying to obtaine name from git branch")
+            throw new GradleException('Error: petName property not found. Run the gradle task with this property: generatePet -PpetName=<yourpetname>')
+        }
+    }
+
+    def sourcesPath = './generator/baseclass'
+    def entityName1 = '${EntityName}'
+    def entityName2 = '${EntityName,}'
+    def entityName3 = '${EntityName,,}'
+
+    doLast {
+        new File(sourcesPath).listFiles().each {
+            def newFile = new File(getFullFilePathByPackage(it, name.capitalize() + it.getName()))
+            def x = it.text
+                    .replace(entityName1, name.capitalize())
+                    .replace(entityName2, name.uncapitalize())
+                    .replace(entityName3, name.toLowerCase())
+            newFile.createNewFile()
+            newFile.write(x)
+        }
+    }
+}
+
+String obtainPetNameByGitBranchName() {
+    def reader = new FileReader(new File('.git/head'))
+    def head = reader.readLine().split('/')
+    reader.close()
+    return head[head.length - 1]
+}
+
+String getFullFilePathByPackage(File file, String filename) {
+    def reader = new FileReader(file)
+    String line = reader.readLine()
+    reader.close()
+    return "src/main/java/" + line
+            .replace('package ', '')
+            .replace('.', '/')
+            .replace(';', '')
+            .concat('/')
+            .concat(filename)
+            .concat('.java')
+}
