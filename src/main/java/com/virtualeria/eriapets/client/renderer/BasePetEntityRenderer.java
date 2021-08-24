@@ -5,21 +5,20 @@ import com.virtualeria.eriapets.entities.BasePetEntity;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.MinecraftClientGame;
 import net.minecraft.client.font.TextRenderer;
 
-import net.minecraft.client.gui.screen.ingame.InventoryScreen;
+
 import net.minecraft.client.render.VertexConsumerProvider;
 
 import net.minecraft.client.render.entity.EntityRenderer;
 import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.util.math.MatrixStack;
+
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.math.Matrix4f;
 import net.minecraft.util.math.Quaternion;
 
-import software.bernie.geckolib3.model.AnimatedGeoModel;
 import software.bernie.geckolib3.renderers.geo.GeoEntityRenderer;
 
 import java.awt.*;
@@ -39,7 +38,7 @@ public class BasePetEntityRenderer extends GeoEntityRenderer<BasePetEntity> {
         super.render(entity, entityYaw, partialTicks, matrices, vertexConsumers, packedLightIn);
     }
 
-    public void drawHungry(MatrixStack matrices,BasePetEntity entity,VertexConsumerProvider vertexConsumers,int packedLightIn){
+    public void drawHungry(MatrixStack matrices, BasePetEntity entity, VertexConsumerProvider vertexConsumers, int packedLightIn) {
         Text text = new TranslatableText("Hambre : " + entity.getHungry());
         @SuppressWarnings("rawtypes") EntityRenderer entityRenderer = (EntityRenderer) (Object) this;
 
@@ -58,7 +57,9 @@ public class BasePetEntityRenderer extends GeoEntityRenderer<BasePetEntity> {
         int backgroundColor = (int) (backgroundOpacity * 255.0F) << 24;
 
         textRenderer.draw(text, x, (float) y, Color.CYAN.getRGB(), false, matrix4f, vertexConsumers, false, backgroundColor, packedLightIn);
-        matrices.multiply(new Quaternion(0,1,0,0));
+        matrices.multiply(new Quaternion(0, 1, 0, 0));
         matrices.pop();
     }
+
+
 }
