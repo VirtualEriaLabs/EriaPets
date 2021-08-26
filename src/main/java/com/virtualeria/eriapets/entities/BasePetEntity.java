@@ -1,6 +1,9 @@
 package com.virtualeria.eriapets.entities;
 
 import com.virtualeria.eriapets.access.PlayerEntityDuck;
+import com.virtualeria.eriapets.client.gui.PetGuiDescription;
+import com.virtualeria.eriapets.entities.inv.PetEntityInventory;
+import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -14,15 +17,21 @@ import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.network.PacketByteBuf;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.screen.*;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.Box;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.AnimationState;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
@@ -37,7 +46,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
-public class BasePetEntity extends TameableEntity implements IAnimatable {
+public class BasePetEntity extends TameableEntity implements IAnimatable, ExtendedScreenHandlerFactory {
 
     private AnimationFactory factory = new AnimationFactory(this);
 
@@ -50,19 +59,23 @@ public class BasePetEntity extends TameableEntity implements IAnimatable {
 
     private int abilityCooldown = 1;
 
+    /**
+     * Inventory
+     */
+    private final PetEntityInventory petInv;
+    private int inventorySize = 9;
+
     static {
         HUNGRY = DataTracker.registerData(BasePetEntity.class, TrackedDataHandlerRegistry.FLOAT);
         HAPPINESS = DataTracker.registerData(BasePetEntity.class, TrackedDataHandlerRegistry.FLOAT);
         CUSTOMDEATH = DataTracker.registerData(BasePetEntity.class, TrackedDataHandlerRegistry.INTEGER);
         ABILITYUSETIME = DataTracker.registerData(BasePetEntity.class, TrackedDataHandlerRegistry.STRING);
-
     }
 
     public BasePetEntity(EntityType<? extends TameableEntity> entityType, World world) {
         super(entityType, world);
         this.ignoreCameraFrustum = true;
-
-
+        petInv = new PetEntityInventory(this);
     }
 
     /**
@@ -193,7 +206,7 @@ public class BasePetEntity extends TameableEntity implements IAnimatable {
         }
 
         if (!itemStack.isEmpty() && itemStack.getItem() == Items.DIAMOND_AXE) {
-            drawGUI();
+            drawGUI(player);
             return ActionResult.SUCCESS;
         } else {
             if (this.getCustomDeath() == 0) {
@@ -261,10 +274,33 @@ public class BasePetEntity extends TameableEntity implements IAnimatable {
 
 
     /**
-     * Draws de GUI of the pet
+     * Open Pet GUI
      */
-    public void drawGUI() {
-        System.out.println("[BasePet] drawGUI");
+    public void drawGUI(PlayerEntity player) {
+        if(!world.isClient()){
+            System.out.println("[BasePet] drawGUI");
+            player.openHandledScreen(this);
+        }
+    }
+
+    @Nullable
+    @Override
+    public ScreenHandler createMenu(int syncId, PlayerInventory inv,PlayerEntity player) {
+        return new PetGuiDescription(syncId,inv, ScreenHandlerContext.create(this.world, this.getBlockPos()),this);
+    }
+
+    @Override
+    public void writeScreenOpeningData(ServerPlayerEntity player, PacketByteBuf buf) {
+        buf.writeBlockPos(this.getBlockPos());
+        buf.writeInt(this.getId());
+    }
+
+    public Inventory getInventory(){
+        return this.petInv;
+    }
+
+    public int getInventorySize(){
+        return inventorySize;
     }
 
     public void setHungry(float v) {
@@ -313,6 +349,4 @@ public class BasePetEntity extends TameableEntity implements IAnimatable {
         this.setCustomDeath(0);
         this.setInvulnerable(false);
     }
-
-
 }

@@ -23,6 +23,10 @@ repositories {
 			header(HttpHeaderAuthentication)
 		}
 	}
+	maven {
+		name = "CottonMC"
+		url = "https://server.bbkr.space/artifactory/libs-release"
+	}
 }
 
 dependencies {
@@ -31,6 +35,8 @@ dependencies {
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 	modImplementation "software.bernie.geckolib:${project.geckolib_version}"
+	modImplementation include("io.github.cottonmc:LibGui:${project.libgui_version}")
+
 }
 
 processResources {
