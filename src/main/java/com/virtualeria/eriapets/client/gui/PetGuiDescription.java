@@ -22,10 +22,10 @@ public class PetGuiDescription extends SyncedGuiDescription {
     private static final int PANEL_INSETS = 7;
 
     private static final int WINDOW_WIDTH = 176;
-    private static final int WINDOW_HEIGHT = 174;
+    private static final int WINDOW_HEIGHT = 170;
 
     private static final int PET_VIEW_WIDTH = 60;
-    private static final int PET_VIEW_HEIGHT = 80;
+    private static final int PET_VIEW_HEIGHT = 60;
 
     public PetGuiDescription(int syncId, PlayerInventory playerInventory, ScreenHandlerContext ctx, BasePetEntity petEntity) {
         super(EriaPetsMain.PET_SCREEN_HANDLER_TYPE, syncId, playerInventory);
@@ -34,24 +34,21 @@ public class PetGuiDescription extends SyncedGuiDescription {
         WTabPanel root = new WTabPanel();
         setRootPanel(root);
 
-        //Main pet tab
+        //Pet tab
         WPlainPanel petPanel = buildTabPanel(root, Items.NAME_TAG,"Your Pet");
         petPanel.add(buildLabel(petEntity.getDisplayName(), VerticalAlignment.CENTER, HorizontalAlignment.LEFT),0,10);
         WEntityViewer petViewer = new WEntityViewer(petEntity,40);
-        petPanel.add(petViewer, WINDOW_WIDTH - PET_VIEW_HEIGHT + PANEL_INSETS, 0,PET_VIEW_WIDTH,PET_VIEW_WIDTH);
+        petPanel.add(petViewer, WINDOW_WIDTH - PET_VIEW_WIDTH - PANEL_INSETS*2, 0, PET_VIEW_WIDTH, PET_VIEW_HEIGHT);
 
-        //Pet stats tab
+        //Stats tab
         WPlainPanel petStatsPanel = buildTabPanel(root,Items.APPLE,"Health");
         petStatsPanel.add(buildLabel("HP: " + Float.toString(petEntity.getHealth())),0,20);
         petStatsPanel.add(buildLabel("Hunger: " + Float.toString(petEntity.getHungry())),0,40);
 
-        //Pet inventory tab
+        //Inventory tab
         WPlainPanel petInventoryPanel = buildTabPanel(root,Items.CHEST,"Pet Inventory");
         buildPetInventory(petEntity.getInventory(),petInventoryPanel);
-
-
-        WPlayerInvPanel inventoryPanel = new WPlayerInvPanel(playerInventory,true);
-        petInventoryPanel.add(inventoryPanel,0,72);
+        petInventoryPanel.add(this.createPlayerInventoryPanel(true),0,69);
 
         root.validate(this);
     }
@@ -84,15 +81,20 @@ public class PetGuiDescription extends SyncedGuiDescription {
     }
 
     private void buildPetInventory(Inventory inventory,WPlainPanel petInventoryPanel){
-        for(int i = 0; i < 9; i++){
+        int y = 11;
+        int x = 0;
+        for(int i = 0; i < inventory.size(); i++){
             WItemSlot itemSlot = WItemSlot.of(inventory, i);
-            petInventoryPanel.add(itemSlot,i*18,10,16,16);
+            petInventoryPanel.add(itemSlot,x++*18,y,16,16);
+            if(x != 0 && (x) % 9 == 0){
+                y += 18;
+                x = 0;
+            }
         }
     }
 
-
     /**
-     * This makes the (root) tab panel transparent
+     * This makes the root (tab) panel transparent
      */
     @Override
     public void addPainters() {}

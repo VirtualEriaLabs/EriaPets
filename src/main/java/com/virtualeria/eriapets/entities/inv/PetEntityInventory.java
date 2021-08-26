@@ -77,4 +77,11 @@ public class PetEntityInventory implements Inventory {
     public void clear() {
         this.stacks.clear();
     }
+
+    public void dropInventory(){
+        for(int i = 0; i < stacks.size(); i++){
+            petEntity.dropStack(stacks.get(i));
+            stacks.set(i,ItemStack.EMPTY);
+        }
+    }
 }

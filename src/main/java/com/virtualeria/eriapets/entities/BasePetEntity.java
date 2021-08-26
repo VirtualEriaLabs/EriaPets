@@ -62,7 +62,7 @@ public class BasePetEntity extends TameableEntity implements IAnimatable, Extend
     /**
      * Inventory
      */
-    private final PetEntityInventory petInv;
+    private PetEntityInventory petInv;
     private int inventorySize = 9;
 
     static {
@@ -223,10 +223,16 @@ public class BasePetEntity extends TameableEntity implements IAnimatable, Extend
     public void onDeath(DamageSource source) {
         if (!source.isOutOfWorld()) {
             customDeathEvent();
+
         } else {
             this.setInvulnerable(false);
             super.onDeath(source);
         }
+    }
+
+    @Override
+    protected void dropInventory() {
+        petInv.dropInventory();
     }
 
     public void drawFireEffect() {
@@ -257,6 +263,7 @@ public class BasePetEntity extends TameableEntity implements IAnimatable, Extend
         this.setHealth(1);
         this.setCustomDeath(1);
         this.goalSelector.clear();
+        this.dropInventory();
 
     }
 
@@ -301,6 +308,18 @@ public class BasePetEntity extends TameableEntity implements IAnimatable, Extend
 
     public int getInventorySize(){
         return inventorySize;
+    }
+
+    /**
+     * Change the default size of the pet inventory
+     * TODO: This literally creates a new inventory and doesn't copy the old items
+     * @param inventorySize The new size for the inventory
+     * @return the new Inventory
+     */
+    public Inventory setInventorySize(int inventorySize){
+        this.inventorySize = inventorySize;
+        this.petInv = new PetEntityInventory(this);
+        return petInv;
     }
 
     public void setHungry(float v) {
