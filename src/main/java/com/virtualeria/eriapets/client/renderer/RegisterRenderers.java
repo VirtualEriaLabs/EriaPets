@@ -12,5 +12,6 @@ public class RegisterRenderers {
         EntityRendererRegistry.INSTANCE.register(EntityRegistryPets.PINGU_PET_ENTITY, PinguPetEntityRenderer::new);
         EntityRendererRegistry.INSTANCE.register(EntityRegistryPets.FLINCH_PET_ENTITY, FlinchPetEntityRenderer::new);
         EntityRendererRegistry.INSTANCE.register(EntityRegistryPets.GNOME_PET_ENTITY, GnomePetEntityRenderer::new);
+        EntityRendererRegistry.INSTANCE.register(EntityRegistryPets.CASPER_PET_ENTITY, CasperEntityRenderer::new);
     }
 }

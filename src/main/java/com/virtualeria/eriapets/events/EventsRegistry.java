@@ -1,6 +1,7 @@
 package com.virtualeria.eriapets.events;
 
 import com.virtualeria.eriapets.access.PlayerEntityDuck;
+import com.virtualeria.eriapets.entities.BasePetEntity;
 import com.virtualeria.eriapets.entities.OthoPetEntity;
 import com.virtualeria.eriapets.entities.SlimerPetEntity;
 import net.minecraft.entity.Entity;
@@ -18,6 +19,7 @@ public class EventsRegistry {
     public static void registerEvents() {
         othoShellBreakCallbackEvent();
         slimerFallDamageCallback();
+        clientPetAbilityTrigger();
 
     }
 
@@ -62,8 +64,19 @@ public class EventsRegistry {
                     return ActionResult.SUCCESS;
                 }
             }
-
-
+            return ActionResult.FAIL;
+        });
+    }
+    public static void clientPetAbilityTrigger() {
+        ClientPetAbilityTrigger.EVENT.register((player) -> {
+            Entity ownedEntity = player.world.getEntityById(((PlayerEntityDuck) player).getOwnedPetID());
+            if (ownedEntity instanceof BasePetEntity) {
+                BasePetEntity basePet = (BasePetEntity) ownedEntity;
+                if(basePet.abilityIsCooledDown()){
+                    basePet.customAbility();
+                    return ActionResult.SUCCESS;
+                }
+            }
             return ActionResult.FAIL;
         });
     }
