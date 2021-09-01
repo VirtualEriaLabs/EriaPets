@@ -2,7 +2,7 @@ package com.virtualeria.eriapets.entities;
 
 import com.virtualeria.eriapets.access.PlayerEntityDuck;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.screen.ingame.InventoryScreen;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ai.goal.FollowOwnerGoal;
@@ -15,7 +15,7 @@ import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.Inventory;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
@@ -296,7 +296,13 @@ public class BasePetEntity extends TameableEntity implements IAnimatable {
     public boolean abilityIsCooledDown() {
         return new Timestamp(System.currentTimeMillis()).getTime() > this.getAbilityUsedTime();
     }
-
+    @Override
+    public boolean isAlive() {
+        return !this.isRemoved() && this.getHealth() > 0.0F && this.getCustomDeath() == 0;
+    }
+    public boolean canUseAbility() {
+        return new Timestamp(System.currentTimeMillis()).getTime() > this.getAbilityUsedTime() && this.getCustomDeath() == 0;
+    }
     public Long getAbilityUsedTime() {
         String x = (String) this.dataTracker.get(ABILITYUSETIME);
         return Long.parseLong(x);

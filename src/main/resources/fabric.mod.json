@@ -28,7 +28,7 @@
     ]
   },
   "mixins": [
-    "modid.mixins.json"
+    "eriapets.mixins.json"
   ],
 
   "depends": {
