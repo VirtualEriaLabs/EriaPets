@@ -14,7 +14,7 @@ public class PetEntityInventory implements Inventory {
 
     public PetEntityInventory(BasePetEntity petEntity){
         this.petEntity = petEntity;
-        this.size = petEntity.getInventorySize();
+        this.size = petEntity.getInventorySize()+petEntity.getEquipmentSize();
         this.stacks = DefaultedList.ofSize(size,ItemStack.EMPTY);
     }
 
@@ -79,7 +79,8 @@ public class PetEntityInventory implements Inventory {
     }
 
     public void dropInventory(){
-        for(int i = 0; i < stacks.size(); i++){
+        //Don't drop equipment/upgrades
+        for(int i = petEntity.getEquipmentSize(); i < stacks.size(); i++){
             petEntity.dropStack(stacks.get(i));
             stacks.set(i,ItemStack.EMPTY);
         }

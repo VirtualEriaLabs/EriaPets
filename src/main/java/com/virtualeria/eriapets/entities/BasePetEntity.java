@@ -59,11 +59,14 @@ public class BasePetEntity extends TameableEntity implements IAnimatable, Extend
 
     private int abilityCooldown = 1;
 
+    public final PetEntityPropertyDelegate propertyDelegate;
+
     /**
      * Inventory
      */
     private PetEntityInventory petInv;
     private int inventorySize = 9;
+    private int equipmentSize = 6;
 
     static {
         HUNGRY = DataTracker.registerData(BasePetEntity.class, TrackedDataHandlerRegistry.FLOAT);
@@ -76,6 +79,7 @@ public class BasePetEntity extends TameableEntity implements IAnimatable, Extend
         super(entityType, world);
         this.ignoreCameraFrustum = true;
         petInv = new PetEntityInventory(this);
+        propertyDelegate = new PetEntityPropertyDelegate(this);
     }
 
     /**
@@ -308,6 +312,10 @@ public class BasePetEntity extends TameableEntity implements IAnimatable, Extend
 
     public int getInventorySize(){
         return inventorySize;
+    }
+
+    public int getEquipmentSize(){
+        return equipmentSize;
     }
 
     /**
