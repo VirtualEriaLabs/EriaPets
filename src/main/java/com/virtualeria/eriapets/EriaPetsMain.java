@@ -8,14 +8,10 @@ import net.fabricmc.api.ModInitializer;
 
 import com.virtualeria.eriapets.client.gui.PetGuiDescription;
 import com.virtualeria.eriapets.entities.BasePetEntity;
-import com.virtualeria.eriapets.entities.EntityRegistryPets;
-import com.virtualeria.eriapets.events.EventsRegistry;
+
 import com.virtualeria.eriapets.utils.Constants;
-import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.screen.ScreenHandlerContext;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.util.Identifier;
@@ -36,7 +32,7 @@ public class EriaPetsMain implements ModInitializer {
 
     @Override
     public void onInitialize() {
-
+        LOGGER.info("[EriaPets] Initialize");
         PET_SCREEN_HANDLER_TYPE = ScreenHandlerRegistry.registerExtended(new Identifier(Constants.ModID,"pet_entity_gui"), (syncId, inventory, buf) -> {
             BlockPos pos = buf.readBlockPos();
             int entityId = buf.readInt();
@@ -49,10 +45,11 @@ public class EriaPetsMain implements ModInitializer {
             return new PetGuiDescription(syncId, inventory, ScreenHandlerContext.create(inventory.player.world, pos), petEntity);
         });
 
-        LOGGER.info("[EriaPets] Initialize");
+
         GeckoLib.initialize();
         EntityRegistryPets.initialize();
         EventsRegistry.registerEvents();
         EriaNetworkingServer.registerServerListener();
+
     }
 }
