@@ -6,4 +6,6 @@ public class Constants {
     public static final String animationsDirectory = "animations/%s.animation.json";
 
     public static String ModID = "eriapets";
+
+
 }

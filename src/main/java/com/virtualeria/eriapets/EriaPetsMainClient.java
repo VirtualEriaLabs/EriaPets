@@ -6,6 +6,7 @@ import com.virtualeria.eriapets.client.renderer.*;
 import com.virtualeria.eriapets.entities.EntityRegistryPets;
 import com.virtualeria.eriapets.entities.PinguPetEntity;
 import com.virtualeria.eriapets.entities.SlimerPetEntity;
+import com.virtualeria.eriapets.networking.EriaNetworkingClient;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -31,6 +32,8 @@ public class EriaPetsMainClient  implements ClientModInitializer {
         LOGGER.info("[ERIAPETS CLIENT] Inizialitze client");
         RegisterRenderers.onIntialize();
         KeyBindings.registerKeyBindings();
+        EriaNetworkingClient.registerClientListener();
+
 
     }
 }

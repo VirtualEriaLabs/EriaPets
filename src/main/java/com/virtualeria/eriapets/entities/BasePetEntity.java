@@ -2,6 +2,7 @@ package com.virtualeria.eriapets.entities;
 
 import com.virtualeria.eriapets.access.PlayerEntityDuck;
 import net.minecraft.client.MinecraftClient;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -15,6 +16,7 @@ import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.player.PlayerEntity;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
@@ -80,7 +82,7 @@ public class BasePetEntity extends TameableEntity implements IAnimatable {
         customGoalsInit();
     }
 
-    private void customGoalsInit() {
+    public void customGoalsInit() {
         this.goalSelector.add(5, new LookAtEntityGoal(this, PlayerEntity.class, 6.0F));
         this.goalSelector.add(4, new WanderAroundGoal(this, 0.3f));
         this.goalSelector.add(3, new FollowOwnerGoal(this, 1f, 3f, 8, false));
@@ -295,7 +297,13 @@ public class BasePetEntity extends TameableEntity implements IAnimatable {
     public boolean abilityIsCooledDown() {
         return new Timestamp(System.currentTimeMillis()).getTime() > this.getAbilityUsedTime();
     }
-
+    @Override
+    public boolean isAlive() {
+        return !this.isRemoved() && this.getHealth() > 0.0F && this.getCustomDeath() == 0;
+    }
+    public boolean canUseAbility() {
+        return new Timestamp(System.currentTimeMillis()).getTime() > this.getAbilityUsedTime() && this.getCustomDeath() == 0;
+    }
     public Long getAbilityUsedTime() {
         String x = (String) this.dataTracker.get(ABILITYUSETIME);
         return Long.parseLong(x);

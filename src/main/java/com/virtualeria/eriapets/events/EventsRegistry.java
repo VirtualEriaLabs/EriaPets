@@ -4,6 +4,11 @@ import com.virtualeria.eriapets.access.PlayerEntityDuck;
 import com.virtualeria.eriapets.entities.BasePetEntity;
 import com.virtualeria.eriapets.entities.OthoPetEntity;
 import com.virtualeria.eriapets.entities.SlimerPetEntity;
+import com.virtualeria.eriapets.utils.NetworkHelper;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -72,8 +77,9 @@ public class EventsRegistry {
             Entity ownedEntity = player.world.getEntityById(((PlayerEntityDuck) player).getOwnedPetID());
             if (ownedEntity instanceof BasePetEntity) {
                 BasePetEntity basePet = (BasePetEntity) ownedEntity;
-                if(basePet.abilityIsCooledDown()){
+                if(basePet.canUseAbility()){
                     basePet.customAbility();
+                    ClientPlayNetworking.send(NetworkHelper.PET_ABILITY_TRIGGER,PacketByteBufs.empty());
                     return ActionResult.SUCCESS;
                 }
             }
