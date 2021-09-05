@@ -1,8 +1,11 @@
 package com.virtualeria.eriapets.entities;
 
+import blue.endless.jankson.annotation.Nullable;
 import com.virtualeria.eriapets.access.PlayerEntityDuck;
+import com.virtualeria.eriapets.client.gui.PetGuiDescription;
+import com.virtualeria.eriapets.entities.inv.PetEntityInventory;
+import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.client.MinecraftClient;
-
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -16,11 +19,16 @@ import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.player.PlayerEntity;
-
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.network.PacketByteBuf;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.screen.ScreenHandler;
+import net.minecraft.screen.ScreenHandlerContext;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
@@ -40,7 +48,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
-public class BasePetEntity extends TameableEntity implements IAnimatable {
+public class BasePetEntity extends TameableEntity implements IAnimatable, ExtendedScreenHandlerFactory {
 
     private AnimationFactory factory = new AnimationFactory(this);
 
@@ -53,6 +61,15 @@ public class BasePetEntity extends TameableEntity implements IAnimatable {
 
     private int abilityCooldown = 1;
 
+    public final PetEntityPropertyDelegate propertyDelegate;
+
+    /**
+     * Inventory
+     */
+    private PetEntityInventory petInv;
+    private int inventorySize = 9;
+    private int equipmentSize = 6;
+
     static {
         HUNGRY = DataTracker.registerData(BasePetEntity.class, TrackedDataHandlerRegistry.FLOAT);
         HAPPINESS = DataTracker.registerData(BasePetEntity.class, TrackedDataHandlerRegistry.FLOAT);
@@ -64,6 +81,8 @@ public class BasePetEntity extends TameableEntity implements IAnimatable {
     public BasePetEntity(EntityType<? extends TameableEntity> entityType, World world) {
         super(entityType, world);
         this.ignoreCameraFrustum = true;
+        petInv = new PetEntityInventory(this);
+        propertyDelegate = new PetEntityPropertyDelegate(this);
     }
 
     /**
@@ -194,7 +213,7 @@ public class BasePetEntity extends TameableEntity implements IAnimatable {
         }
 
         if (!itemStack.isEmpty() && itemStack.getItem() == Items.DIAMOND_AXE) {
-            drawGUI();
+            drawGUI(player);
             return ActionResult.SUCCESS;
         } else {
             if (this.getCustomDeath() == 0) {
@@ -215,6 +234,11 @@ public class BasePetEntity extends TameableEntity implements IAnimatable {
             this.setInvulnerable(false);
             super.onDeath(source);
         }
+    }
+
+    @Override
+    protected void dropInventory() {
+        petInv.dropInventory();
     }
 
     public void drawFireEffect() {
@@ -245,6 +269,7 @@ public class BasePetEntity extends TameableEntity implements IAnimatable {
         this.setHealth(1);
         this.setCustomDeath(1);
         this.goalSelector.clear();
+        this.dropInventory();
 
     }
 
@@ -262,12 +287,49 @@ public class BasePetEntity extends TameableEntity implements IAnimatable {
 
 
     /**
-     * Draws de GUI of the pet
+     * Open Pet GUI
      */
-    public void drawGUI() {
-        System.out.println("[BasePet] drawGUI");
+    public void drawGUI(PlayerEntity player) {
+        if(!world.isClient()){
+            System.out.println("[BasePet] drawGUI");
+            player.openHandledScreen(this);
+        }
+    }
 
+    @Nullable
+    @Override
+    public ScreenHandler createMenu(int syncId, PlayerInventory inv,PlayerEntity player) {
+        return new PetGuiDescription(syncId,inv, ScreenHandlerContext.create(this.world, this.getBlockPos()),this);
+    }
 
+    @Override
+    public void writeScreenOpeningData(ServerPlayerEntity player, PacketByteBuf buf) {
+        buf.writeBlockPos(this.getBlockPos());
+        buf.writeInt(this.getId());
+    }
+
+    public Inventory getInventory(){
+        return this.petInv;
+    }
+
+    public int getInventorySize(){
+        return inventorySize;
+    }
+
+    public int getEquipmentSize(){
+        return equipmentSize;
+    }
+
+    /**
+     * Change the default size of the pet inventory
+     * TODO: This literally creates a new inventory and doesn't copy the old items
+     * @param inventorySize The new size for the inventory
+     * @return the new Inventory
+     */
+    public Inventory setInventorySize(int inventorySize){
+        this.inventorySize = inventorySize;
+        this.petInv = new PetEntityInventory(this);
+        return petInv;
     }
 
     public void setHungry(float v) {
