@@ -9,7 +9,8 @@
     "IceBlockMixin",
     "PlayerEntityMixin",
     "PlayerInventoryMixin",
-    "BlockMixin"
+    "BlockMixin",
+    "EntityMixin"
   ],
   "client": [
     "EriaMixin"

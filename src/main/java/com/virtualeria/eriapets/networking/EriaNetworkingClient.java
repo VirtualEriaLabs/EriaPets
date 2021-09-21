@@ -19,5 +19,6 @@ public class EriaNetworkingClient {
                 UsagiPetEntity.drawParticlesSmash(target, MinecraftClient.getInstance().world);
             });
         });
+
     }
 }

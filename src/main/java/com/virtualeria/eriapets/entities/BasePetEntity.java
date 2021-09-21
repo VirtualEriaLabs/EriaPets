@@ -8,6 +8,7 @@ import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.FollowOwnerGoal;
 import net.minecraft.entity.ai.goal.LookAtEntityGoal;
 import net.minecraft.entity.ai.goal.WanderAroundGoal;
@@ -100,7 +101,7 @@ public class BasePetEntity extends TameableEntity implements IAnimatable, Extend
         customGoalsInit();
     }
 
-    private void customGoalsInit() {
+    public void customGoalsInit() {
         this.goalSelector.add(5, new LookAtEntityGoal(this, PlayerEntity.class, 6.0F));
         this.goalSelector.add(4, new WanderAroundGoal(this, 0.3f));
         this.goalSelector.add(3, new FollowOwnerGoal(this, 1f, 3f, 8, false));
