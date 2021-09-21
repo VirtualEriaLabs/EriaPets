@@ -3,12 +3,12 @@ package com.virtualeria.eriapets.entities;
 import blue.endless.jankson.annotation.Nullable;
 import com.virtualeria.eriapets.access.PlayerEntityDuck;
 import com.virtualeria.eriapets.client.gui.PetGuiDescription;
+import com.virtualeria.eriapets.entities.ai.goals.PetWanderAroundGoal;
 import com.virtualeria.eriapets.entities.inv.PetEntityInventory;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.FollowOwnerGoal;
 import net.minecraft.entity.ai.goal.LookAtEntityGoal;
 import net.minecraft.entity.ai.goal.WanderAroundGoal;
@@ -103,7 +103,7 @@ public class BasePetEntity extends TameableEntity implements IAnimatable, Extend
 
     public void customGoalsInit() {
         this.goalSelector.add(5, new LookAtEntityGoal(this, PlayerEntity.class, 6.0F));
-        this.goalSelector.add(4, new WanderAroundGoal(this, 0.3f));
+        this.goalSelector.add(4, new PetWanderAroundGoal(this, 0.3f));
         this.goalSelector.add(3, new FollowOwnerGoal(this, 1f, 3f, 8, false));
     }
 
@@ -116,6 +116,7 @@ public class BasePetEntity extends TameableEntity implements IAnimatable, Extend
         nbt.putFloat("Hungry", this.getHungry());
         nbt.putFloat("Happiness", this.getHungry());
         nbt.putInt("CustomDeath", this.getCustomDeath());
+
     }
 
     /**
@@ -217,7 +218,7 @@ public class BasePetEntity extends TameableEntity implements IAnimatable, Extend
             return ActionResult.SUCCESS;
         } else {
             if (this.getCustomDeath() == 0) {
-                customAbility();
+           //     customAbility();
                 return ActionResult.SUCCESS;
             } else if (this.getCustomDeath() != 0) revive();
         }

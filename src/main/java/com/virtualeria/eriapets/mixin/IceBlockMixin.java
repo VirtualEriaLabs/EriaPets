@@ -31,8 +31,12 @@ public class IceBlockMixin {
             isPinguPetEntity = world.getEntityById(((PlayerEntityDuck) entity).getOwnedPetID()) instanceof PinguPetEntity;
             hasVelocity = (xVel < maxVelocity && zVel < maxVelocity);
 
-            if (isPinguPetEntity && hasVelocity && entity.isSprinting())
+            if (isPinguPetEntity && hasVelocity && entity.isSprinting()){
                 entity.addVelocity(entity.getVelocity().x * 0.2f, entity.getVelocity().y * 0.2f, entity.getVelocity().z * 0.2f);
+                entity.velocityDirty = true;
+                entity.velocityModified = true;
+            }
+
         }
 
     }

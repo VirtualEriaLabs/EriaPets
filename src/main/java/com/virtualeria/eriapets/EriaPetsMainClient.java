@@ -4,6 +4,7 @@ import com.virtualeria.eriapets.client.KeyBindings;
 import com.virtualeria.eriapets.client.renderer.*;
 import com.virtualeria.eriapets.client.gui.PetGuiDescription;
 import com.virtualeria.eriapets.client.gui.PetScreen;
+
 import com.virtualeria.eriapets.networking.EriaNetworkingClient;
 import io.github.cottonmc.cotton.gui.client.CottonInventoryScreen;
 import net.fabricmc.api.ClientModInitializer;
@@ -12,7 +13,6 @@ import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.screenhandler.v1.ScreenRegistry;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
 
 
 @Environment(EnvType.CLIENT)
