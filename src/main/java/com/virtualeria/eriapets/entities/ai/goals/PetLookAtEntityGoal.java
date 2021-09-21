@@ -1,12 +1,13 @@
 package com.virtualeria.eriapets.entities.ai.goals;
 
 import com.virtualeria.eriapets.entities.BasePetEntity;
-import net.minecraft.entity.ai.goal.WanderAroundGoal;
-import net.minecraft.entity.mob.PathAwareEntity;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.ai.goal.LookAtEntityGoal;
+import net.minecraft.entity.mob.MobEntity;
 
-public class PetWanderAroundGoal extends WanderAroundGoal {
-    public PetWanderAroundGoal(PathAwareEntity mob, double speed) {
-        super(mob, speed);
+public class PetLookAtEntityGoal extends LookAtEntityGoal {
+    public PetLookAtEntityGoal(MobEntity mob, Class<? extends LivingEntity> targetType, float range) {
+        super(mob, targetType, range);
     }
 
     public boolean canStart() {

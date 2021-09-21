@@ -3,15 +3,14 @@ package com.virtualeria.eriapets.entities;
 import blue.endless.jankson.annotation.Nullable;
 import com.virtualeria.eriapets.access.PlayerEntityDuck;
 import com.virtualeria.eriapets.client.gui.PetGuiDescription;
+import com.virtualeria.eriapets.entities.ai.goals.PetFollowOwnerGoal;
+import com.virtualeria.eriapets.entities.ai.goals.PetLookAtEntityGoal;
 import com.virtualeria.eriapets.entities.ai.goals.PetWanderAroundGoal;
 import com.virtualeria.eriapets.entities.inv.PetEntityInventory;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.ai.goal.FollowOwnerGoal;
-import net.minecraft.entity.ai.goal.LookAtEntityGoal;
-import net.minecraft.entity.ai.goal.WanderAroundGoal;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
@@ -102,9 +101,9 @@ public class BasePetEntity extends TameableEntity implements IAnimatable, Extend
     }
 
     public void customGoalsInit() {
-        this.goalSelector.add(5, new LookAtEntityGoal(this, PlayerEntity.class, 6.0F));
+        this.goalSelector.add(5, new PetLookAtEntityGoal(this, PlayerEntity.class, 6.0F));
         this.goalSelector.add(4, new PetWanderAroundGoal(this, 0.3f));
-        this.goalSelector.add(3, new FollowOwnerGoal(this, 1f, 3f, 8, false));
+        this.goalSelector.add(3, new PetFollowOwnerGoal(this, 1f, 3f, 8, false));
     }
 
     /**
@@ -201,10 +200,8 @@ public class BasePetEntity extends TameableEntity implements IAnimatable, Extend
 
                 eat(player, hand, itemStack);
                 lovePlayer(player);
-                System.out.println("SET OWNER " + player);
-                ((PlayerEntityDuck)player).setOwnedPetID(this.getId());
+                ((PlayerEntityDuck) player).setOwnedPetID(this.getId());
                 setOwner(player);
-
 
                 return ActionResult.SUCCESS;
             }
@@ -216,11 +213,6 @@ public class BasePetEntity extends TameableEntity implements IAnimatable, Extend
         if (!itemStack.isEmpty() && itemStack.getItem() == Items.DIAMOND_AXE) {
             drawGUI(player);
             return ActionResult.SUCCESS;
-        } else {
-            if (this.getCustomDeath() == 0) {
-           //     customAbility();
-                return ActionResult.SUCCESS;
-            } else if (this.getCustomDeath() != 0) revive();
         }
 
 
@@ -229,12 +221,21 @@ public class BasePetEntity extends TameableEntity implements IAnimatable, Extend
 
     @Override
     public void onDeath(DamageSource source) {
+        System.out.println(this.getCustomDeath());
+        //This is a temporal solution for reviving the pet, the solution is to add the option in the UI or with a keybinding
+        if (this.getCustomDeath() == 1) {
+            revive();
+            return;
+        }
+
         if (!source.isOutOfWorld()) {
             customDeathEvent();
         } else {
             this.setInvulnerable(false);
             super.onDeath(source);
         }
+
+
     }
 
     @Override
@@ -269,7 +270,6 @@ public class BasePetEntity extends TameableEntity implements IAnimatable, Extend
         this.setInvulnerable(true);
         this.setHealth(1);
         this.setCustomDeath(1);
-        this.goalSelector.clear();
         this.dropInventory();
 
     }
@@ -291,7 +291,7 @@ public class BasePetEntity extends TameableEntity implements IAnimatable, Extend
      * Open Pet GUI
      */
     public void drawGUI(PlayerEntity player) {
-        if(!world.isClient()){
+        if (!world.isClient()) {
             System.out.println("[BasePet] drawGUI");
             player.openHandledScreen(this);
         }
@@ -299,8 +299,8 @@ public class BasePetEntity extends TameableEntity implements IAnimatable, Extend
 
     @Nullable
     @Override
-    public ScreenHandler createMenu(int syncId, PlayerInventory inv,PlayerEntity player) {
-        return new PetGuiDescription(syncId,inv, ScreenHandlerContext.create(this.world, this.getBlockPos()),this);
+    public ScreenHandler createMenu(int syncId, PlayerInventory inv, PlayerEntity player) {
+        return new PetGuiDescription(syncId, inv, ScreenHandlerContext.create(this.world, this.getBlockPos()), this);
     }
 
     @Override
@@ -309,25 +309,26 @@ public class BasePetEntity extends TameableEntity implements IAnimatable, Extend
         buf.writeInt(this.getId());
     }
 
-    public Inventory getInventory(){
+    public Inventory getInventory() {
         return this.petInv;
     }
 
-    public int getInventorySize(){
+    public int getInventorySize() {
         return inventorySize;
     }
 
-    public int getEquipmentSize(){
+    public int getEquipmentSize() {
         return equipmentSize;
     }
 
     /**
      * Change the default size of the pet inventory
      * TODO: This literally creates a new inventory and doesn't copy the old items
+     *
      * @param inventorySize The new size for the inventory
      * @return the new Inventory
      */
-    public Inventory setInventorySize(int inventorySize){
+    public Inventory setInventorySize(int inventorySize) {
         this.inventorySize = inventorySize;
         this.petInv = new PetEntityInventory(this);
         return petInv;
@@ -360,13 +361,16 @@ public class BasePetEntity extends TameableEntity implements IAnimatable, Extend
     public boolean abilityIsCooledDown() {
         return new Timestamp(System.currentTimeMillis()).getTime() > this.getAbilityUsedTime();
     }
+
     @Override
     public boolean isAlive() {
         return !this.isRemoved() && this.getHealth() > 0.0F && this.getCustomDeath() == 0;
     }
+
     public boolean canUseAbility() {
         return new Timestamp(System.currentTimeMillis()).getTime() > this.getAbilityUsedTime() && this.getCustomDeath() == 0;
     }
+
     public Long getAbilityUsedTime() {
         String x = (String) this.dataTracker.get(ABILITYUSETIME);
         return Long.parseLong(x);
@@ -381,9 +385,10 @@ public class BasePetEntity extends TameableEntity implements IAnimatable, Extend
     }
 
     public void revive() {
-        this.customGoalsInit();
+        System.out.println(" REVIVE PET ");
         this.setCustomDeath(0);
         this.setInvulnerable(false);
+        this.setHealth(this.getMaxHealth());
     }
 
 

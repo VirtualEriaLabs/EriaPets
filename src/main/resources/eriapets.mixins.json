@@ -13,8 +13,7 @@
     "EntityMixin"
   ],
   "client": [
-    "EriaMixin",
-    "CameraMixin"
+    "EriaMixin"
   ],
   "injectors": {
     "defaultRequire": 1
