@@ -34,7 +34,7 @@ public class PetGuiDescription extends SyncedGuiDescription {
     private final BasePetEntity petEntity;
 
     public PetGuiDescription(int syncId, PlayerInventory playerInventory, ScreenHandlerContext ctx, BasePetEntity petEntity) {
-        super(EriaPetsMain.PET_SCREEN_HANDLER_TYPE, syncId, playerInventory);
+        super(ScreenHandlerRegister.PET_SCREEN_HANDLER_TYPE, syncId, playerInventory);
         this.petEntity = petEntity;
 
         //Root tab panel

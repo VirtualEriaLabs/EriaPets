@@ -1,6 +1,7 @@
 package com.virtualeria.eriapets.client.renderer;
 
 import com.virtualeria.eriapets.entities.EntityRegistryPets;
+import com.virtualeria.eriapets.entities.SpumaEntity;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 
 
@@ -17,5 +18,6 @@ public class RegisterRenderers {
         EntityRendererRegistry.register(EntityRegistryPets.CASPER_PET_ENTITY, CasperEntityRenderer::new);
         EntityRendererRegistry.register(EntityRegistryPets.USAGI_PET_ENTITY, UsagiPetEntityRenderer::new);
         EntityRendererRegistry.register(EntityRegistryPets.POCHO_PET_ENTITY, PochoEntityRenderer::new);
+        EntityRendererRegistry.register(EntityRegistryPets.SPUMA_PET_ENTITY, SpumaEntityRenderer::new);
     }
 }

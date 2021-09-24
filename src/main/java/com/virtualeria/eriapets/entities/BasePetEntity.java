@@ -56,6 +56,8 @@ public class BasePetEntity extends TameableEntity implements IAnimatable, Extend
     private static final TrackedData<Integer> CUSTOMDEATH;
     private static final TrackedData<String> ABILITYUSETIME;
 
+    private boolean isAbilityRunning = false;
+
     public static final String petName = "baseentity";
 
     private int abilityCooldown = 1;
@@ -392,4 +394,11 @@ public class BasePetEntity extends TameableEntity implements IAnimatable, Extend
     }
 
 
+    public boolean isAbilityRunning() {
+        return isAbilityRunning;
+    }
+
+    public void setAbilityRunning(boolean abilityRunning) {
+        isAbilityRunning = abilityRunning;
+    }
 }

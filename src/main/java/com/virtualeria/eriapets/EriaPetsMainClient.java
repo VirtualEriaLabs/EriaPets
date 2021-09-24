@@ -1,6 +1,7 @@
 package com.virtualeria.eriapets;
 
 import com.virtualeria.eriapets.client.KeyBindings;
+import com.virtualeria.eriapets.client.gui.ScreenHandlerRegister;
 import com.virtualeria.eriapets.client.renderer.*;
 import com.virtualeria.eriapets.client.gui.PetGuiDescription;
 import com.virtualeria.eriapets.client.gui.PetScreen;
@@ -27,7 +28,7 @@ public class EriaPetsMainClient  implements ClientModInitializer {
         EriaNetworkingClient.registerClientListener();
 
         ScreenRegistry.<PetGuiDescription, CottonInventoryScreen<PetGuiDescription>>register(
-                EriaPetsMain.PET_SCREEN_HANDLER_TYPE,
+                ScreenHandlerRegister.PET_SCREEN_HANDLER_TYPE,
                 (desc, inventory, title) -> new PetScreen(desc, inventory.player, title)
         );
 
