@@ -119,12 +119,9 @@ public class SpumaEntity extends BasePetEntity {
     }
 
     private <ENTITY extends IAnimatable> void soundListener(SoundKeyframeEvent<ENTITY> event) {
-
-        System.out.println("PARTICLE EVENT " + event.sound);
         if (event.sound.equals("finish")) {
             this.abilityAnimRunning = false;
         } else if (event.sound.equals("explosion")) {
-            System.out.println("EXPLOSION SOUND");
             ClientPlayerEntity player = MinecraftClient.getInstance().player;
             player.playSound(SoundsRegistry.EXPLOSIONBIG_EVENT, 0.1f, 1);
         } else {
@@ -187,10 +184,7 @@ public class SpumaEntity extends BasePetEntity {
 
         if (blockHitResult.getType() != HitResult.Type.MISS) {
 
-            System.out.println(world.getBlockState(blockHitResult.getBlockPos()).getBlock().getName());
-            System.out.println(blockHitResult.getBlockPos());
-
-            world.setBlockState(blockHitResult.getBlockPos(), Blocks.EMERALD_BLOCK.getDefaultState(), Block.NOTIFY_ALL);
+          //  world.setBlockState(blockHitResult.getBlockPos(), Blocks.EMERALD_BLOCK.getDefaultState(), Block.NOTIFY_ALL);
 
             this.getNavigation().isValidPosition(blockHitResult.getBlockPos());
             if (this.getNavigation().isValidPosition(blockHitResult.getBlockPos())) {
