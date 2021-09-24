@@ -47,7 +47,6 @@ public class SlimeMoveControl  extends MoveControl{
 
                     this.slime.getJumpControl().setActive();
                     this.slime.walk = true;
-                    System.out.println("JUMP");
                     lateJump++;
                 } else {
                     this.slime.sidewaysSpeed = 0.0F;

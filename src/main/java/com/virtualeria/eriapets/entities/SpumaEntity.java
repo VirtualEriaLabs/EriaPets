@@ -5,17 +5,10 @@ import com.virtualeria.eriapets.Sounds.SoundsRegistry;
 import com.virtualeria.eriapets.entities.ai.MoveControls.SlimeMoveControl;
 import com.virtualeria.eriapets.entities.ai.goals.*;
 
-import net.minecraft.block.Block;
-
-import net.minecraft.block.Blocks;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.command.argument.EntityAnchorArgumentType;
+
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.control.MoveControl;
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.entity.attribute.EntityAttributes;
 
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -44,8 +37,6 @@ import software.bernie.geckolib3.core.event.SoundKeyframeEvent;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 
-
-import java.util.EnumSet;
 
 public class SpumaEntity extends BasePetEntity {
     public static final String petName = "spuma";
@@ -115,6 +106,8 @@ public class SpumaEntity extends BasePetEntity {
             radio -= 0.5f;
             yOff += 0.5f;
         }
+
+
     }
 
     private <ENTITY extends IAnimatable> void soundListener(SoundKeyframeEvent<ENTITY> event) {
@@ -182,7 +175,7 @@ public class SpumaEntity extends BasePetEntity {
         BlockHitResult blockHitResult = this.world.raycast(new RaycastContext(player.getPos().add(new Vec3d(0, 1.5, 0)), fin, RaycastContext.ShapeType.OUTLINE, RaycastContext.FluidHandling.ANY, player));
 
         if (blockHitResult.getType() != HitResult.Type.MISS) {
-          //  world.setBlockState(blockHitResult.getBlockPos(), Blocks.EMERALD_BLOCK.getDefaultState(), Block.NOTIFY_ALL);
+            //  world.setBlockState(blockHitResult.getBlockPos(), Blocks.EMERALD_BLOCK.getDefaultState(), Block.NOTIFY_ALL);
             this.getNavigation().isValidPosition(blockHitResult.getBlockPos());
             if (this.getNavigation().isValidPosition(blockHitResult.getBlockPos())) {
                 targetExplosionPos = blockHitResult.getBlockPos();
@@ -201,7 +194,6 @@ public class SpumaEntity extends BasePetEntity {
     public void setTargetExplosionPos(BlockPos blockPos) {
         this.targetExplosionPos = blockPos;
     }
-
 
 
 }

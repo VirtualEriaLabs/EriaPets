@@ -11,7 +11,7 @@ import java.util.EnumSet;
 
 public class SlimeFaceTowardTargetGoal extends Goal {
     private final SpumaEntity slime;
-    private int ticksLeft;
+
 
     public SlimeFaceTowardTargetGoal(SpumaEntity slime) {
         this.slime = slime;
@@ -31,7 +31,7 @@ public class SlimeFaceTowardTargetGoal extends Goal {
     }
 
     public void start() {
-        this.ticksLeft = 300;
+
         super.start();
     }
 

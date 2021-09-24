@@ -25,7 +25,6 @@ public class SpumaPetExplosion extends Goal {
 
     SpumaEntity spumaEntity;
     ServerWorld world;
-    int explosionDuration = 27;
     int maxGoalDuration = 200;
     int duration = 0;
     int currentExplosionDuration = 0;
@@ -43,7 +42,7 @@ public class SpumaPetExplosion extends Goal {
         if (!this.spumaEntity.isAlive()) {
             return false;
         }
-        if(!this.spumaEntity.canUseAbility())
+        if (!this.spumaEntity.canUseAbility())
             return false;
         if (this.spumaEntity.getTargetExplosionPos() != null) {
             return true;
@@ -53,7 +52,6 @@ public class SpumaPetExplosion extends Goal {
     }
 
     public void start() {
-        System.out.println("START");
         moveToTargetExplosion();
         this.oldWaterPathfindingPenalty = this.spumaEntity.getPathfindingPenalty(PathNodeType.WATER);
         this.spumaEntity.setPathfindingPenalty(PathNodeType.WATER, 0.0F);
@@ -84,11 +82,9 @@ public class SpumaPetExplosion extends Goal {
         currentExplosionDuration++;
         switch (currentExplosionDuration) {
             case 27:
-                System.out.println("EXPLOSION TRIGGERED");
                 explosion();
                 break;
             case 44:
-                System.out.println("FINISHED TRIGGERED");
                 this.spumaEntity.setTargetExplosionPos(null);
                 this.spumaEntity.setAbilityRunning(false);
                 this.spumaEntity.useAbility();
@@ -107,10 +103,11 @@ public class SpumaPetExplosion extends Goal {
             entity.damage(DamageSource.MAGIC, 3);
             x = Math.cos(entity.getX()) * radio;
             y = Math.sin(entity.getZ()) * radio;
-            MinecraftClient.getInstance().particleManager.addParticle(
-                    ParticleTypes.CAMPFIRE_COSY_SMOKE, this.spumaEntity.getX(), this.spumaEntity.getY(), this.spumaEntity.getZ(),
-                    x * 0.05f, 0.0D, y * 0.05f
-            );
+            if (this.spumaEntity.world.isClient)
+                MinecraftClient.getInstance().particleManager.addParticle(
+                        ParticleTypes.CAMPFIRE_COSY_SMOKE, this.spumaEntity.getX(), this.spumaEntity.getY(), this.spumaEntity.getZ(),
+                        x * 0.05f, 0.0D, y * 0.05f
+                );
 
             Vec3d a = this.spumaEntity.getPos().subtract(entity.getPos()).normalize();
 
