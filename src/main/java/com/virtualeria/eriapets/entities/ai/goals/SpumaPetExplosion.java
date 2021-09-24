@@ -43,10 +43,11 @@ public class SpumaPetExplosion extends Goal {
         if (!this.spumaEntity.isAlive()) {
             return false;
         }
+        if(!this.spumaEntity.canUseAbility())
+            return false;
         if (this.spumaEntity.getTargetExplosionPos() != null) {
             return true;
         }
-
 
         return false;
     }
@@ -90,6 +91,7 @@ public class SpumaPetExplosion extends Goal {
                 System.out.println("FINISHED TRIGGERED");
                 this.spumaEntity.setTargetExplosionPos(null);
                 this.spumaEntity.setAbilityRunning(false);
+                this.spumaEntity.useAbility();
                 break;
         }
     }
