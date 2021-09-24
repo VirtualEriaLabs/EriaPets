@@ -22,6 +22,7 @@ public class EntityRegistryPets {
     public static final EntityType<CasperEntity> CASPER_PET_ENTITY;
 
     public static final EntityType<UsagiPetEntity> USAGI_PET_ENTITY;
+    public static final EntityType<PochoEntity> POCHO_PET_ENTITY;
 
 
     static{
@@ -35,6 +36,7 @@ public class EntityRegistryPets {
         CASPER_PET_ENTITY = buildEntity(CasperEntity::new,CasperEntity.class,0.3F,0.7F, SpawnGroup.CREATURE);
 
         USAGI_PET_ENTITY = buildEntity(UsagiPetEntity::new,UsagiPetEntity.class,0.3F,0.7F, SpawnGroup.CREATURE);
+        POCHO_PET_ENTITY = buildEntity(PochoEntity::new,PochoEntity.class,0.3F,0.7F, SpawnGroup.CREATURE);
 
     }
 
@@ -49,7 +51,7 @@ public class EntityRegistryPets {
         FabricDefaultAttributeRegistry.register(CASPER_PET_ENTITY, CasperEntity.createCasperAttributes());
 
         FabricDefaultAttributeRegistry.register(USAGI_PET_ENTITY, BasePetEntity.createMobAttributes());
-
+        FabricDefaultAttributeRegistry.register(POCHO_PET_ENTITY, BasePetEntity.createMobAttributes());
 
         Registry.register(Registry.ENTITY_TYPE, new Identifier(Constants.ModID, BasePetEntity.petName),BASE_PET_ENTITY);
         Registry.register(Registry.ENTITY_TYPE, new Identifier(Constants.ModID, OthoPetEntity.petName),OTHO_PET_ENTITY);
@@ -59,6 +61,7 @@ public class EntityRegistryPets {
         Registry.register(Registry.ENTITY_TYPE, new Identifier(Constants.ModID, FlinchPetEntity.petName),FLINCH_PET_ENTITY);
         Registry.register(Registry.ENTITY_TYPE, new Identifier(Constants.ModID, CasperEntity.petName),CASPER_PET_ENTITY);
         Registry.register(Registry.ENTITY_TYPE, new Identifier(Constants.ModID, UsagiPetEntity.petName),USAGI_PET_ENTITY);
+        Registry.register(Registry.ENTITY_TYPE, new Identifier(Constants.ModID, PochoEntity.petName),POCHO_PET_ENTITY);
 
     }
     public static <T extends Entity> EntityType<T> buildEntity(EntityType.EntityFactory<T> entity, Class<T> entityClass, float width, float height, SpawnGroup group) {

@@ -21,8 +21,7 @@ public class FlinchPetEntity extends BasePetEntity {
             useAbility();
             if (target instanceof LivingEntity)
                 ((LivingEntity) target).addStatusEffect(new StatusEffectInstance(StatusEffects.POISON, 1500));
-
-              ((LivingEntity) target).addStatusEffect(new StatusEffectInstance(StatusEffects.GLOWING, 1500));
+                ((LivingEntity) target).addStatusEffect(new StatusEffectInstance(StatusEffects.GLOWING, 1500));
 
         }
     }
