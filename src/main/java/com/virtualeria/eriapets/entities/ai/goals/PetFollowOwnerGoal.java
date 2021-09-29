@@ -35,7 +35,7 @@ public class PetFollowOwnerGoal extends Goal {
         this.minDistance = minDistance;
         this.maxDistance = maxDistance;
         this.leavesAllowed = leavesAllowed;
-        this.setControls(EnumSet.of(Goal.Control.MOVE, Goal.Control.LOOK));
+        this.setControls(EnumSet.of(Control.JUMP, Goal.Control.MOVE));
         if (!(tameable.getNavigation() instanceof MobNavigation) && !(tameable.getNavigation() instanceof BirdNavigation)) {
             throw new IllegalArgumentException("Unsupported mob type for FollowOwnerGoal");
         }
@@ -49,6 +49,8 @@ public class PetFollowOwnerGoal extends Goal {
             return false;
         } else if (!this.isPetAlive()) {
             return false;
+        } if (this.isPetAbilityRunning()) {
+            return false;
         } else if (this.tameable.isSitting()) {
             return false;
         } else if (this.tameable.squaredDistanceTo(livingEntity) < (double)(this.minDistance * this.minDistance)) {
@@ -61,6 +63,9 @@ public class PetFollowOwnerGoal extends Goal {
 
     public boolean shouldContinue() {
         if(!this.isPetAlive()){
+            return false;
+        }else
+        if (this.isPetAbilityRunning()) {
             return false;
         }else
         if (this.navigation.isIdle()) {
@@ -147,5 +152,8 @@ public class PetFollowOwnerGoal extends Goal {
 
     public boolean isPetAlive() {
         return (this.tameable instanceof BasePetEntity && ((BasePetEntity) this.tameable).isAlive());
+    }
+    public boolean isPetAbilityRunning() {
+        return (this.tameable instanceof BasePetEntity && ((BasePetEntity) this.tameable).isAbilityRunning());
     }
 }
