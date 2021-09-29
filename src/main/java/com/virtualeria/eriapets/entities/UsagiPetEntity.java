@@ -89,7 +89,6 @@ public class UsagiPetEntity extends BasePetEntity {
                 }
             }
         }
-
     }
 
 }

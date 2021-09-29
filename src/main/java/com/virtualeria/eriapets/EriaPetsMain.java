@@ -3,7 +3,9 @@ package com.virtualeria.eriapets;
 
 import com.virtualeria.eriapets.Sounds.SoundsRegistry;
 import com.virtualeria.eriapets.client.gui.ScreenHandlerRegister;
+import com.virtualeria.eriapets.client.particles.ParticlesRegistry;
 import com.virtualeria.eriapets.entities.EntityRegistryPets;
+import com.virtualeria.eriapets.entities.effects.EffectsRegistry;
 import com.virtualeria.eriapets.events.EventsRegistry;
 import com.virtualeria.eriapets.networking.EriaNetworkingServer;
 import net.fabricmc.api.ModInitializer;
@@ -26,6 +28,8 @@ public class EriaPetsMain implements ModInitializer {
         SoundsRegistry.initialize();
         EriaNetworkingServer.registerServerListener();
         ScreenHandlerRegister.initialize();
+        EffectsRegistry.initialize();
+        ParticlesRegistry.initializeServer();
         LOGGER.info("[EriaPets] Initialized done");
     }
 }

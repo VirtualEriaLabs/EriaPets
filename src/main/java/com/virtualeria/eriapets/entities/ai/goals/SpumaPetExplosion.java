@@ -87,7 +87,7 @@ public class SpumaPetExplosion extends Goal {
             case 44:
                 this.spumaEntity.setTargetExplosionPos(null);
                 this.spumaEntity.setAbilityRunning(false);
-                this.spumaEntity.useAbility();
+             //   this.spumaEntity.useAbility();
                 break;
         }
     }

@@ -167,6 +167,10 @@ public class BasePetEntity extends TameableEntity implements IAnimatable, Extend
         return getOwnerUuid() != null && getOwnerUuid().equals(uuid);
     }
 
+
+    public void drawPetEffects(World world){
+
+    }
     @Override
     public PassiveEntity createChild(ServerWorld world, PassiveEntity entity) {
         return null;

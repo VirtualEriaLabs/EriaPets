@@ -97,6 +97,7 @@ public class PetFollowOwnerGoal extends Goal {
                 if (this.tameable.squaredDistanceTo(this.owner) >= 144.0D) {
                     this.tryTeleport();
                 } else {
+                   // this.navigation.startMovingTo(this.owner.getX(),this.owner.getY()+1,this.owner.getZ(),this.speed);
                     this.navigation.startMovingTo(this.owner, this.speed);
                 }
 

@@ -5,6 +5,7 @@ import com.virtualeria.eriapets.Sounds.SoundsRegistry;
 import com.virtualeria.eriapets.entities.ai.MoveControls.SlimeMoveControl;
 import com.virtualeria.eriapets.entities.ai.goals.*;
 
+import com.virtualeria.eriapets.utils.RaycastUtils;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 
@@ -170,10 +171,8 @@ public class SpumaEntity extends BasePetEntity {
     @Override
     public void customAbility() {
         PlayerEntity player = (PlayerEntity) this.getOwner();
-        Vec3d playerDirection = player.getRotationVector().normalize();
-        Vec3d fin = player.getPos().add(new Vec3d(0, 1.5, 0)).add(playerDirection.multiply(30));
-        BlockHitResult blockHitResult = this.world.raycast(new RaycastContext(player.getPos().add(new Vec3d(0, 1.5, 0)), fin, RaycastContext.ShapeType.OUTLINE, RaycastContext.FluidHandling.ANY, player));
 
+        BlockHitResult blockHitResult = RaycastUtils.raycastFromPlayerView(player,30,this.world);
         if (blockHitResult.getType() != HitResult.Type.MISS) {
             //  world.setBlockState(blockHitResult.getBlockPos(), Blocks.EMERALD_BLOCK.getDefaultState(), Block.NOTIFY_ALL);
             this.getNavigation().isValidPosition(blockHitResult.getBlockPos());

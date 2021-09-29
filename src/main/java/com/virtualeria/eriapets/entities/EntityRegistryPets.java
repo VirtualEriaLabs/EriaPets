@@ -22,6 +22,7 @@ public class EntityRegistryPets {
     public static final EntityType<UsagiPetEntity> USAGI_PET_ENTITY;
     public static final EntityType<PochoEntity> POCHO_PET_ENTITY;
     public static final EntityType<SpumaEntity> SPUMA_PET_ENTITY;
+    public static final EntityType<SparkyEntity> SPARKY_PET_ENTITY;
 
     static{
         BASE_PET_ENTITY = buildEntity(BasePetEntity::new,BasePetEntity.class,0.3F,0.5F, SpawnGroup.CREATURE);
@@ -34,6 +35,7 @@ public class EntityRegistryPets {
         USAGI_PET_ENTITY = buildEntity(UsagiPetEntity::new,UsagiPetEntity.class,0.3F,0.7F, SpawnGroup.CREATURE);
         POCHO_PET_ENTITY = buildEntity(PochoEntity::new,PochoEntity.class,0.3F,0.7F, SpawnGroup.CREATURE);
         SPUMA_PET_ENTITY = buildEntity(SpumaEntity::new,SpumaEntity.class,0.5f,0.5F, SpawnGroup.CREATURE);
+        SPARKY_PET_ENTITY = buildEntity(SparkyEntity::new,SparkyEntity.class,0.5f,0.5F, SpawnGroup.CREATURE);
 
     }
 
@@ -48,6 +50,7 @@ public class EntityRegistryPets {
         FabricDefaultAttributeRegistry.register(USAGI_PET_ENTITY, BasePetEntity.createMobAttributes());
         FabricDefaultAttributeRegistry.register(POCHO_PET_ENTITY, BasePetEntity.createMobAttributes());
         FabricDefaultAttributeRegistry.register(SPUMA_PET_ENTITY, BasePetEntity.createMobAttributes());
+        FabricDefaultAttributeRegistry.register(SPARKY_PET_ENTITY, SparkyEntity.createSparkyAttributes());
 
         Registry.register(Registry.ENTITY_TYPE, new Identifier(Constants.ModID, BasePetEntity.petName),BASE_PET_ENTITY);
         Registry.register(Registry.ENTITY_TYPE, new Identifier(Constants.ModID, OthoPetEntity.petName),OTHO_PET_ENTITY);
@@ -59,6 +62,7 @@ public class EntityRegistryPets {
         Registry.register(Registry.ENTITY_TYPE, new Identifier(Constants.ModID, UsagiPetEntity.petName),USAGI_PET_ENTITY);
         Registry.register(Registry.ENTITY_TYPE, new Identifier(Constants.ModID, PochoEntity.petName),POCHO_PET_ENTITY);
         Registry.register(Registry.ENTITY_TYPE, new Identifier(Constants.ModID, SpumaEntity.petName),SPUMA_PET_ENTITY);
+        Registry.register(Registry.ENTITY_TYPE, new Identifier(Constants.ModID, SparkyEntity.petName),SPARKY_PET_ENTITY);
 
     }
     public static <T extends Entity> EntityType<T> buildEntity(EntityType.EntityFactory<T> entity, Class<T> entityClass, float width, float height, SpawnGroup group) {
