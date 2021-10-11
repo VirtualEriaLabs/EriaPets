@@ -162,7 +162,6 @@ public class SpumaEntity extends BasePetEntity {
         this.goalSelector.add(2, new SpumaPetExplosion(this, (ServerWorld) world));
         this.goalSelector.add(3, new SlimeFaceTowardTargetGoal(this));
         this.goalSelector.add(5, new PetLookAtEntityGoal(this, PlayerEntity.class, 6.0F));
-        // this.goalSelector.add(4, new PetWanderAroundGoal(this, 1f));
         this.goalSelector.add(4, new PetFollowOwnerGoal(this, 1f, 3f, 8, false));
 
     }
@@ -174,7 +173,6 @@ public class SpumaEntity extends BasePetEntity {
 
         BlockHitResult blockHitResult = RaycastUtils.raycastFromPlayerView(player,30,this.world);
         if (blockHitResult.getType() != HitResult.Type.MISS) {
-            //  world.setBlockState(blockHitResult.getBlockPos(), Blocks.EMERALD_BLOCK.getDefaultState(), Block.NOTIFY_ALL);
             this.getNavigation().isValidPosition(blockHitResult.getBlockPos());
             if (this.getNavigation().isValidPosition(blockHitResult.getBlockPos())) {
                 targetExplosionPos = blockHitResult.getBlockPos();

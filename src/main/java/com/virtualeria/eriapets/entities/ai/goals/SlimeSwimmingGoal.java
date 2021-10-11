@@ -1,5 +1,6 @@
 package com.virtualeria.eriapets.entities.ai.goals;
 
+import com.virtualeria.eriapets.entities.BasePetEntity;
 import com.virtualeria.eriapets.entities.SpumaEntity;
 import com.virtualeria.eriapets.entities.ai.MoveControls.SlimeMoveControl;
 import net.minecraft.entity.ai.goal.Goal;
@@ -16,7 +17,7 @@ public class SlimeSwimmingGoal extends  Goal{
     }
 
     public boolean canStart() {
-        return (this.slime.isTouchingWater() || this.slime.isInLava()) && this.slime.getMoveControl() instanceof SlimeMoveControl;
+        return (this.slime.isTouchingWater() || this.slime.isInLava()) && this.slime.getMoveControl() instanceof SlimeMoveControl && !isPetAbilityRunning();
     }
 
     public void tick() {
@@ -25,5 +26,9 @@ public class SlimeSwimmingGoal extends  Goal{
         }
 
         ((SlimeMoveControl) this.slime.getMoveControl()).move(1.2D);
+    }
+
+    public boolean isPetAbilityRunning() {
+        return (this.slime instanceof BasePetEntity && ((BasePetEntity) this.slime).isAbilityRunning());
     }
 }

@@ -145,6 +145,8 @@ public class SparkyEntity extends BasePetEntity {
             }
         }
     }
+
+
     private void drawAbilityParticle(){
         double x = 0;
         double y = 0;

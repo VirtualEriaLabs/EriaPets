@@ -87,7 +87,7 @@ public class SpumaPetExplosion extends Goal {
             case 44:
                 this.spumaEntity.setTargetExplosionPos(null);
                 this.spumaEntity.setAbilityRunning(false);
-             //   this.spumaEntity.useAbility();
+                this.spumaEntity.useAbility();
                 break;
         }
     }
@@ -121,7 +121,6 @@ public class SpumaPetExplosion extends Goal {
         if (this.spumaEntity.squaredDistanceTo(this.spumaEntity.getTargetExplosionPos().getX(),
                 this.spumaEntity.getTargetExplosionPos().getY(),
                 this.spumaEntity.getTargetExplosionPos().getZ()) < 3.5) {
-            System.out.println("ARRIVED");
             reachedDestionation = true;
 
         } else {
@@ -130,7 +129,6 @@ public class SpumaPetExplosion extends Goal {
     }
 
     void triggerExplosionEffects() {
-        //Trigger the explosion effects
         for (ServerPlayerEntity player : PlayerLookup.tracking(this.world, this.spumaEntity.getTargetExplosionPos())) {
             PacketByteBuf buf = PacketByteBufs.create();
             buf.writeInt(this.spumaEntity.getId());

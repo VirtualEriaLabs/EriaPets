@@ -11,7 +11,7 @@ public class PetLookAtEntityGoal extends LookAtEntityGoal {
     }
 
     public boolean canStart() {
-        if (!isPetAlive()) return false;
+        if (!isPetAlive() && !isPetAbilityRunning()) return false;
         return super.canStart();
     }
 
@@ -19,7 +19,9 @@ public class PetLookAtEntityGoal extends LookAtEntityGoal {
         if (!isPetAlive()) return false;
         return super.shouldContinue();
     }
-
+    public boolean isPetAbilityRunning() {
+        return (this.mob instanceof BasePetEntity && ((BasePetEntity) this.mob).isAbilityRunning());
+    }
     public boolean isPetAlive() {
         return (this.mob instanceof BasePetEntity && ((BasePetEntity) this.mob).isAlive());
     }

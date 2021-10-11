@@ -40,8 +40,8 @@ public class SparkyElectrocuteEntities extends Goal {
     public boolean canStart() {
         if (!this.sparkyEntity.isAlive())
             return false;
-     /*   if (!this.sparkyEntity.canUseAbility())
-            return false;*/
+        if (!this.sparkyEntity.canUseAbility())
+            return false;
         if (this.sparkyEntity.isAbilityRunning())
             return true;
 
