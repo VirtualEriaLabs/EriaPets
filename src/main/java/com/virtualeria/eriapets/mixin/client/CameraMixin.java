@@ -2,7 +2,6 @@ package com.virtualeria.eriapets.mixin.client;
 
 import com.virtualeria.eriapets.access.PlayerEntityDuck;
 import com.virtualeria.eriapets.entities.MimihoEntity;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.Camera;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -48,7 +47,7 @@ public class CameraMixin {
     public void update(BlockView area, Entity focusedEntity, boolean thirdPerson, boolean inverseView, float tickDelta, CallbackInfo ci) {
         if (focusedEntity instanceof PlayerEntity) {
             Entity ownedEntity = focusedEntity.world.getEntityById(((PlayerEntityDuck) focusedEntity).getOwnedPetID());
-            if (ownedEntity != null && ownedEntity instanceof MimihoEntity && ((MimihoEntity) ownedEntity).isPlayerEated()) {
+            if (ownedEntity != null && ownedEntity instanceof MimihoEntity && ((MimihoEntity) ownedEntity).isPlayerInside()) {
                 this.setPos(MathHelper.lerp((double) tickDelta, ownedEntity.prevX, ownedEntity.getX()),
                         MathHelper.lerp((double) tickDelta, ownedEntity.prevY, ownedEntity.getY()) + (double) MathHelper.lerp(tickDelta, this.lastCameraY, this.cameraY),
                         MathHelper.lerp((double) tickDelta, ownedEntity.prevZ, ownedEntity.getZ()));

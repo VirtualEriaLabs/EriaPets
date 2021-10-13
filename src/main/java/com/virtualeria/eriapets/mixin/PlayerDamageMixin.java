@@ -15,7 +15,6 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
@@ -34,7 +33,7 @@ public class PlayerDamageMixin extends PlayerEntity {
         ActionResult result = OthoShellBreakCallback.EVENT.invoker().interact((ServerPlayerEntity) (Object) this);
         Entity ownedEntity = this.world.getEntityById(((PlayerEntityDuck) this).getOwnedPetID());
 
-        if (result == ActionResult.SUCCESS || ownedEntity != null && ownedEntity instanceof MimihoEntity && ((MimihoEntity) ownedEntity).isPlayerEated() ) {
+        if (result == ActionResult.SUCCESS || ownedEntity != null && ownedEntity instanceof MimihoEntity && ((MimihoEntity) ownedEntity).isPlayerInside() ) {
             info.cancel();
         }
     }

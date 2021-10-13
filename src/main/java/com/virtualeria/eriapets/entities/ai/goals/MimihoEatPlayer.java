@@ -49,7 +49,7 @@ public class MimihoEatPlayer extends Goal {
                 this.owner.getY(),
                 this.owner.getZ()) < 1) {
             playerReached = true;
-            this.mimiho.setPlayerIsEated(true);
+            this.mimiho.setPlayerIsInside(true);
             this.mimiho.setInvulnerable(true);
             this.mimiho.getOwner().addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, maxDuration - durationTicks, 2));
         }
@@ -65,7 +65,7 @@ public class MimihoEatPlayer extends Goal {
         durationTicks = 0;
         this.mimiho.setAbilityRunning(false);
         this.mimiho.useAbility();
-        this.mimiho.setPlayerIsEated(false);
+        this.mimiho.setPlayerIsInside(false);
         this.mimiho.setInvulnerable(false);
         this.playerReached = false;
     }

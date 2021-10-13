@@ -46,7 +46,6 @@ public class EriaNetworkingClient {
             int basePetId = buf.readInt();
             BlockPos pos = buf.readBlockPos();
             client.execute(() -> {
-                System.out.println("HOLAAA " + basePetId + " asd  " + pos);
                 // Everything in this lambda is run on the render thread
                 SparkyEntity basepet = (SparkyEntity) MinecraftClient.getInstance().world.getEntityById(basePetId);
                 basepet.drawPetEffects(MinecraftClient.getInstance().world,pos);

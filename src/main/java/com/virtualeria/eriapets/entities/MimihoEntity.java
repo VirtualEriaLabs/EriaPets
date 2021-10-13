@@ -1,6 +1,7 @@
 package com.virtualeria.eriapets.entities;
 
 
+import com.virtualeria.eriapets.entities.AnimationController.MimihoAnimationController;
 import com.virtualeria.eriapets.entities.ai.goals.*;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -24,17 +25,18 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 public class MimihoEntity extends SpumaEntity {
 
     public static final String petName = "mimiho";
-    private static final TrackedData<Boolean> playerIsEated;
+    private static final TrackedData<Boolean> isPlayerInside;
     boolean abilityStaticPose = false;
+    MimihoAnimationController animationController;
 
     static {
-        playerIsEated = DataTracker.registerData(MimihoEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
+        isPlayerInside = DataTracker.registerData(MimihoEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
     }
 
     public MimihoEntity(EntityType<? extends TameableEntity> entityType, World world) {
         super(entityType, world);
         this.inanimate = true;
-
+        animationController = new MimihoAnimationController(this);
 
     }
 
@@ -54,7 +56,7 @@ public class MimihoEntity extends SpumaEntity {
      */
     protected void initDataTracker() {
         super.initDataTracker();
-        this.dataTracker.startTracking(playerIsEated, false);
+        this.dataTracker.startTracking(isPlayerInside, false);
     }
 
     public void drawPetEffects(World world) {
@@ -63,48 +65,14 @@ public class MimihoEntity extends SpumaEntity {
 
     @Override
     public boolean collides() {
-        if (isPlayerEated()) {
-            return false;
-        } else
-            return true;
-    }
-
-
-    private <E extends IAnimatable> PlayState predicateMimiho(AnimationEvent<E> event) {
-        PlayState playState = PlayState.CONTINUE;
-        if (isPlayerEated()) {
-            if (!abilityStaticPose) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.ability", false));
-                abilityStaticPose = true;
-            } else if (event.getController().getAnimationState() == AnimationState.Stopped) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.abilitystaticpose", false));
-            }
-
-            return playState;
-        } else abilityStaticPose = false;
-
-        if (!(event.getLimbSwingAmount() > -0.15F && event.getLimbSwingAmount() < 0.15F) && this.getCustomDeath() == 0) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.walk", false));
-        } else if (this.getCustomDeath() > 0) {
-            if (this.getCustomDeath() == 2 && event.getController().getAnimationState() == AnimationState.Stopped) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.deathPos", true));
-            } else if (this.getCustomDeath() == 1) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.death", false));
-                this.setCustomDeath(2);
-            }
-        }
-        if (event.getController().getAnimationState() == AnimationState.Stopped) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.idle", true));
-        }
-        return playState;
+        return !isPlayerInside();
     }
 
     @Override
     public void registerControllers(AnimationData data) {
-        AnimationController controller = new AnimationController(this, "controller", 0.0F, this::predicateMimiho);
+        AnimationController controller = new AnimationController(this, "controller", 0.0F, animationController::predicateMimiho);
         data.addAnimationController(controller);
     }
-
 
     @Override
     public void initGoals() {
@@ -120,11 +88,11 @@ public class MimihoEntity extends SpumaEntity {
         this.setAbilityRunning(true);
     }
 
-    public boolean isPlayerEated() {
-        return this.dataTracker.get(this.playerIsEated);
+    public boolean isPlayerInside() {
+        return this.dataTracker.get(this.isPlayerInside);
     }
 
-    public void setPlayerIsEated(boolean v) {
-        this.dataTracker.set(this.playerIsEated, v);
+    public void setPlayerIsInside(boolean v) {
+        this.dataTracker.set(this.isPlayerInside, v);
     }
 }

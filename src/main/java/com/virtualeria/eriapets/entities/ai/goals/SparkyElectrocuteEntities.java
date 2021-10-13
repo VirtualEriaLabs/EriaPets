@@ -27,7 +27,7 @@ public class SparkyElectrocuteEntities extends Goal {
     final int effectsTickMax = 40;
     int electrocudeDuration = 0;
     final int electrocudeDurationMax = 100;
-    List<Entity> listEntitiesElectrocute;
+    List<Entity> electrocutedEntities;
     float radio = 5;
 
     public SparkyElectrocuteEntities(SparkyEntity sparkyEntity, World world, float radio) {
@@ -83,10 +83,10 @@ public class SparkyElectrocuteEntities extends Goal {
     }
 
     void electrocute() {
-        listEntitiesElectrocute = world.getOtherEntities(this.sparkyEntity, new Box(this.sparkyEntity.getX() - radio, this.sparkyEntity.getY() - radio, this.sparkyEntity.getZ() - radio,
+        electrocutedEntities = world.getOtherEntities(this.sparkyEntity, new Box(this.sparkyEntity.getX() - radio, this.sparkyEntity.getY() - radio, this.sparkyEntity.getZ() - radio,
                 this.sparkyEntity.getX() + radio, this.sparkyEntity.getY() + radio, this.sparkyEntity.getZ() + radio));
 
-        for (Entity entity : listEntitiesElectrocute) {
+        for (Entity entity : electrocutedEntities) {
             if (entity instanceof LivingEntity && !(entity instanceof PlayerEntity))
                 ((LivingEntity) entity).addStatusEffect(new StatusEffectInstance(EffectsRegistry.ELECTROCUTE, electrocudeDurationMax, 10, true, true));
         }

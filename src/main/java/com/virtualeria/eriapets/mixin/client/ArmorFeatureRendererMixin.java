@@ -28,9 +28,9 @@ public class ArmorFeatureRendererMixin<T extends LivingEntity, M extends BipedEn
     @Inject(at = @At("HEAD"), method = "render", cancellable = true)
     private void render(MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i, T livingEntity, float f, float g, float h, float j, float k, float l, CallbackInfo ci) {
 
-        if (livingEntity instanceof PlayerEntity) {
-            Entity ownedEntity = livingEntity.world.getEntityById(((PlayerEntityDuck) livingEntity).getOwnedPetID());
-            if (ownedEntity instanceof MimihoEntity && ((MimihoEntity) ownedEntity).isPlayerEated())
+        if (livingEntity instanceof PlayerEntity playerEntity ) {
+            Entity ownedEntity = playerEntity.world.getEntityById(((PlayerEntityDuck) livingEntity).getOwnedPetID());
+            if (ownedEntity instanceof MimihoEntity mimihoEntity && mimihoEntity.isPlayerInside())
                 ci.cancel();
         }
     }

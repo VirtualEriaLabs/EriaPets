@@ -30,7 +30,7 @@ public class PlayerEntityRendererMixin extends LivingEntityRenderer<AbstractClie
         PlayerEntityModel<AbstractClientPlayerEntity> playerEntityModel = (PlayerEntityModel) this.getModel();
         Entity ownedEntity = player.world.getEntityById(((PlayerEntityDuck) player).getOwnedPetID());
         if (ownedEntity != null && ownedEntity instanceof MimihoEntity) {
-            if (((MimihoEntity) ownedEntity).isPlayerEated())
+            if (((MimihoEntity) ownedEntity).isPlayerInside())
                 playerEntityModel.setVisible(false);
         }
     }

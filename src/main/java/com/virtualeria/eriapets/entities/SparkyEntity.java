@@ -68,7 +68,6 @@ public class SparkyEntity extends BasePetEntity {
 
         BlockHitResult blockHitResult = RaycastUtils.raycastFromPlayerView(player, 30, this.world);
         if (blockHitResult.getType() != HitResult.Type.MISS) {
-            this.getNavigation().isValidPosition(blockHitResult.getBlockPos());
             if (this.getNavigation().isValidPosition(blockHitResult.getBlockPos())) {
                 this.setAbilityRunning(true);
                 this.setTargetElectrocute(blockHitResult.getBlockPos());

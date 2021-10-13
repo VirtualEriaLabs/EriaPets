@@ -15,6 +15,6 @@ public class EffectsRegistry {
     public static final StatusEffect ELECTROCUTE = new ElectrocuteStatusEffect().addAttributeModifier(EntityAttributes.GENERIC_MOVEMENT_SPEED, UUID.randomUUID().toString(), -0.15000000596046448D, EntityAttributeModifier.Operation.MULTIPLY_TOTAL);
 
     public static void  initialize(){
-        Registry.register(Registry.STATUS_EFFECT, new Identifier(Constants.ModID, "exp"), ELECTROCUTE);
+        Registry.register(Registry.STATUS_EFFECT, new Identifier(Constants.ModID, "electrocute"), ELECTROCUTE);
     }
 }

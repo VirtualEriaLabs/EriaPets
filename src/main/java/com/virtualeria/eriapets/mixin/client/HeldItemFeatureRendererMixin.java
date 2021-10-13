@@ -36,7 +36,7 @@ public class HeldItemFeatureRendererMixin<T extends LivingEntity, M extends Enti
         Entity ownedEntity = livingEntity.world.getEntityById(((PlayerEntityDuck) livingEntity).getOwnedPetID());
 
         if (ownedEntity != null && ownedEntity instanceof MimihoEntity) {
-            if (((MimihoEntity) ownedEntity).isPlayerEated())
+            if (((MimihoEntity) ownedEntity).isPlayerInside())
                 ci.cancel();
 
         }

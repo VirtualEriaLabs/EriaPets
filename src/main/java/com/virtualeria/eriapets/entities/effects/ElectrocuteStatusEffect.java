@@ -25,9 +25,8 @@ public class ElectrocuteStatusEffect extends StatusEffect {
             electrocuteTick = 0;
             return true;
 
-        } else return false;
-
-
+        }
+        return false;
     }
 
     // This method is called when it applies the status effect.

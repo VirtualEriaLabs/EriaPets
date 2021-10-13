@@ -33,7 +33,7 @@ public class MimihoEntityModel extends AnimatedGeoModel<MimihoEntity> {
         super.setLivingAnimations(mimihoEntity, uniqueID, customPredicate);
 
 
-        if (mimihoEntity.getOwner() != null && mimihoEntity.isPlayerEated()) {
+        if (mimihoEntity.getOwner() != null && mimihoEntity.isPlayerInside()) {
             mimihoEntity.setPosition(mimihoEntity.getPos().lerp(mimihoEntity.getOwner().getPos(), 0.2));
             mimihoEntity.setHeadYaw(mimihoEntity.getOwner().getHeadYaw());
             mimihoEntity.setYaw(mimihoEntity.getOwner().getYaw());
