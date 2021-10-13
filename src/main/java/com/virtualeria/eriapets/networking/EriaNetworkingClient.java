@@ -1,6 +1,7 @@
 package com.virtualeria.eriapets.networking;
 
 import com.virtualeria.eriapets.entities.BasePetEntity;
+import com.virtualeria.eriapets.entities.SparkyEntity;
 import com.virtualeria.eriapets.entities.SpumaEntity;
 import com.virtualeria.eriapets.entities.UsagiPetEntity;
 
@@ -29,6 +30,25 @@ public class EriaNetworkingClient {
                 // Everything in this lambda is run on the render thread
                 SpumaEntity spumaEntity = (SpumaEntity) MinecraftClient.getInstance().world.getEntityById(spumaEntityId);
                 spumaEntity.playAbilityAnim(MinecraftClient.getInstance().world);
+            });
+        });
+        ClientPlayNetworking.registerGlobalReceiver(NetworkHelper.SYNC_PET_EFFECTS, (client, handler, buf, responseSender) -> {
+            // Read packet data on the event loop
+            int basePetId = buf.readInt();
+            client.execute(() -> {
+                // Everything in this lambda is run on the render thread
+                BasePetEntity basepet = (BasePetEntity) MinecraftClient.getInstance().world.getEntityById(basePetId);
+                basepet.drawPetEffects(MinecraftClient.getInstance().world);
+            });
+        });
+        ClientPlayNetworking.registerGlobalReceiver(NetworkHelper.SYNC_PET_SPARKY, (client, handler, buf, responseSender) -> {
+            // Read packet data on the event loop
+            int basePetId = buf.readInt();
+            BlockPos pos = buf.readBlockPos();
+            client.execute(() -> {
+                // Everything in this lambda is run on the render thread
+                SparkyEntity basepet = (SparkyEntity) MinecraftClient.getInstance().world.getEntityById(basePetId);
+                basepet.drawPetEffects(MinecraftClient.getInstance().world,pos);
             });
         });
 

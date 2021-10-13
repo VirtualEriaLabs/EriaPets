@@ -5,6 +5,7 @@ import com.virtualeria.eriapets.Sounds.SoundsRegistry;
 import com.virtualeria.eriapets.entities.ai.MoveControls.SlimeMoveControl;
 import com.virtualeria.eriapets.entities.ai.goals.*;
 
+import com.virtualeria.eriapets.utils.RaycastUtils;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 
@@ -161,7 +162,6 @@ public class SpumaEntity extends BasePetEntity {
         this.goalSelector.add(2, new SpumaPetExplosion(this, (ServerWorld) world));
         this.goalSelector.add(3, new SlimeFaceTowardTargetGoal(this));
         this.goalSelector.add(5, new PetLookAtEntityGoal(this, PlayerEntity.class, 6.0F));
-        // this.goalSelector.add(4, new PetWanderAroundGoal(this, 1f));
         this.goalSelector.add(4, new PetFollowOwnerGoal(this, 1f, 3f, 8, false));
 
     }
@@ -170,12 +170,9 @@ public class SpumaEntity extends BasePetEntity {
     @Override
     public void customAbility() {
         PlayerEntity player = (PlayerEntity) this.getOwner();
-        Vec3d playerDirection = player.getRotationVector().normalize();
-        Vec3d fin = player.getPos().add(new Vec3d(0, 1.5, 0)).add(playerDirection.multiply(30));
-        BlockHitResult blockHitResult = this.world.raycast(new RaycastContext(player.getPos().add(new Vec3d(0, 1.5, 0)), fin, RaycastContext.ShapeType.OUTLINE, RaycastContext.FluidHandling.ANY, player));
 
+        BlockHitResult blockHitResult = RaycastUtils.raycastFromPlayerView(player,30,this.world);
         if (blockHitResult.getType() != HitResult.Type.MISS) {
-            //  world.setBlockState(blockHitResult.getBlockPos(), Blocks.EMERALD_BLOCK.getDefaultState(), Block.NOTIFY_ALL);
             this.getNavigation().isValidPosition(blockHitResult.getBlockPos());
             if (this.getNavigation().isValidPosition(blockHitResult.getBlockPos())) {
                 targetExplosionPos = blockHitResult.getBlockPos();

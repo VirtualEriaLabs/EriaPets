@@ -1,5 +1,6 @@
 package com.virtualeria.eriapets.entities.ai.goals;
 
+import com.virtualeria.eriapets.entities.MimihoEntity;
 import com.virtualeria.eriapets.entities.SpumaEntity;
 import com.virtualeria.eriapets.entities.ai.MoveControls.SlimeMoveControl;
 import net.minecraft.command.argument.EntityAnchorArgumentType;
@@ -41,14 +42,18 @@ public class SlimeFaceTowardTargetGoal extends Goal {
             return false;
         } else if (livingEntity != null) {
             return true;
-        } else if (slime.isAbilityRunning()) {
+        } else if (slime.isAbilityRunning() && !isMimihoEntity()) {
             return true;
         }
         return false;
     }
 
+    private boolean isMimihoEntity(){
+        return this.slime instanceof MimihoEntity;
+    }
+
     public void tick() {
-        if (this.slime.getNavigation().getTargetPos() != null && slime.isAbilityRunning()) {
+        if (this.slime.getNavigation().getTargetPos() != null && slime.isAbilityRunning() && this.slime.getTargetExplosionPos() != null) {
             this.slime.lookAt(EntityAnchorArgumentType.EntityAnchor.EYES, new Vec3d(this.slime.getTargetExplosionPos().getX(), this.slime.getTargetExplosionPos().getY(), this.slime.getTargetExplosionPos().getZ()));
         } else this.slime.lookAtEntity(this.slime.getOwner(), 10.0F, 10.0F);
 

@@ -13,7 +13,12 @@
     "EntityMixin"
   ],
   "client": [
-    "EriaMixin"
+    "EriaMixin",
+    "client.InGameHudMixin",
+    "client.PlayerEntityRendererMixin",
+    "client.ArmorFeatureRendererMixin",
+    "client.HeldItemFeatureRendererMixin",
+    "client.CameraMixin"
   ],
   "injectors": {
     "defaultRequire": 1

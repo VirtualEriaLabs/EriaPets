@@ -1,0 +1,99 @@
+{
+	"format_version": "1.12.0",
+	"minecraft:geometry": [
+		{
+			"description": {
+				"identifier": "geometry.unknown",
+				"texture_width": 64,
+				"texture_height": 64,
+				"visible_bounds_width": 3,
+				"visible_bounds_height": 2.5,
+				"visible_bounds_offset": [0, 0.75, 0]
+			},
+			"bones": [
+				{
+					"name": "body",
+					"pivot": [0, 0, 0]
+				},
+				{
+					"name": "ojo",
+					"parent": "body",
+					"pivot": [0, 7, -5.5],
+					"cubes": [
+						{"origin": [-3, 9, -6], "size": [6, 1, 1], "uv": [22, 34]},
+						{"origin": [-4, 5, -6], "size": [8, 4, 1], "uv": [11, 27]},
+						{"origin": [-3, 4, -6], "size": [6, 1, 1], "uv": [28, 23]}
+					]
+				},
+				{
+					"name": "cuerpo",
+					"parent": "body",
+					"pivot": [0, 7, -2.5],
+					"cubes": [
+						{"origin": [-6, 3, -5], "size": [12, 8, 1], "uv": [0, 17]},
+						{"origin": [-7, 2, -4], "size": [14, 10, 7], "uv": [0, 0]}
+					]
+				},
+				{
+					"name": "bone2",
+					"parent": "body",
+					"pivot": [7.5, 2.5, 1.5],
+					"cubes": [
+						{"origin": [7, 2, 1], "size": [1, 1, 5], "uv": [15, 32]}
+					]
+				},
+				{
+					"name": "bone4",
+					"parent": "body",
+					"pivot": [-7.5, 2.5, 1.5],
+					"cubes": [
+						{"origin": [-8, 2, 1], "size": [1, 1, 5], "uv": [31, 28]}
+					]
+				},
+				{
+					"name": "bone",
+					"parent": "body",
+					"pivot": [-8, 11.5, 1],
+					"cubes": [
+						{"origin": [-8, 11, 1], "size": [1, 1, 5], "uv": [28, 17]}
+					]
+				},
+				{
+					"name": "bone5",
+					"parent": "bone",
+					"pivot": [-8.5, 11.5, 4.5],
+					"cubes": [
+						{"origin": [-9, 11, 4], "size": [1, 1, 9], "uv": [17, 17]}
+					]
+				},
+				{
+					"name": "bone3",
+					"parent": "body",
+					"pivot": [8, 11.5, 2],
+					"cubes": [
+						{"origin": [7, 11, 1], "size": [1, 1, 5], "uv": [24, 27]},
+						{"origin": [8, 11, 4], "size": [1, 1, 9], "uv": [0, 26]}
+					]
+				},
+				{
+					"name": "antenaDerecha",
+					"parent": "body",
+					"pivot": [-3.5, 15, -2],
+					"cubes": [
+						{"origin": [-4, 14, -3], "size": [1, 4, 1], "uv": [0, 26]},
+						{"origin": [-4, 12, -2], "size": [1, 4, 1], "uv": [28, 17]}
+					]
+				},
+				{
+					"name": "antenaIzquierda",
+					"parent": "body",
+					"pivot": [3.5, 15, -2],
+					"cubes": [
+						{"origin": [3, 14, -3], "size": [1, 4, 1], "uv": [0, 0]},
+						{"origin": [3, 12, -2], "size": [1, 4, 1], "uv": [4, 26]}
+					]
+				}
+			]
+		}
+	]
+}
